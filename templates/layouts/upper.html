@@ -1,0 +1,15 @@
+{% extends 'basic.html' %} 
+{% load static %} 
+{% load i18n %}
+
+{% block layout %}
+<div class="flex col">
+    {% include 'partials/navbar/upper.html' with fixed=True %}
+    <main class="h-vh">
+        {% block content %}
+        <!-- page content -->
+        {% endblock content %} 
+    </main>
+    {% include 'partials/footer/simple.html' %}
+</div>
+{% endblock layout %} 

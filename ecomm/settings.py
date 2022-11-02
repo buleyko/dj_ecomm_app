@@ -78,6 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # apps
+                'ecomm.apps.fnd.context.common.context_processor',
             ],
         },
     },
@@ -174,7 +176,11 @@ REDIRECT_TO_IF_AUTHENTICATED = '/'
 LOGIN_REDIRECT_URL = '/account/dashboard/'
 LOGIN_URL = '/account/signin/'
 
-DEFAULT_IMAGE = 'images/placeholder.png'
+DEFAULT_IMAGE = {
+    'PLACEHOLDER': 'images/placeholder.png',
+    'LOGO': 'images/logo.png',
+    'ICON': 'images/icons.png',
+}
 
 # SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

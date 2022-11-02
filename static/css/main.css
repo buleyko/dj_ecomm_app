@@ -1,0 +1,64 @@
+:root { 
+	--min-body-width: 500px;
+	--max-body-width: 1400px;
+	--height-navbar: 64px;
+
+	--base-val:  0.125rem;
+	--hover-opacity: 0.8;
+
+	--font-weight-common: 500;
+	--font-weight-bold: 700;
+
+	--bg-body-color: #FFFFFF;
+	--bg-content-color: #F0F0F0;
+	--bg-nav-color: #C0C0C0;
+	--bg-footer-color: #C0C0C0;
+	--text-color: #404040;
+	--box-shadow-color: gray;
+	--wish-color: #E498A5;
+	--compare-color: #7CB9E8;
+	--box-color:  #8FBC8F;
+	--hover-color: gray;
+	--border-color: #404040;
+	--bg-error-message-color: #F08080;
+	--error-message-color: #FFFFFF;
+	--bg-success-message-color: #90ee90;
+	--success-message-color: #FFFFFF;
+}
+html {
+	background: white;
+	scroll-behavior: smooth;
+}
+* {
+	margin: 0;
+    padding: 0;
+}
+body {
+	margin: 0 auto;
+	min-width: var(--min-body-width);
+	max-width: var(--max-body-width);
+	font-family: 'Montserrat', sans-serif;
+	background: var(--bg-body-color);
+	color: var(--text-color);
+	font-size: 18px;
+	letter-spacing: 0em;
+	line-height: 1.36em;
+    font-weight: var(--font-weight-common);
+}
+button {
+	all: initial;
+}
+h1, h2, h3 {
+	font-weight: var(--font-weight-bold);
+	line-height: 1.4em;
+	margin: 0;
+}
+h1 {
+	font-size: 50px;
+}
+h2 {
+	font-size: 40px;
+}
+h3 {
+	font-size: 30px;
+}

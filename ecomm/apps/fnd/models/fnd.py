@@ -15,7 +15,7 @@ Account = get_user_model()
 
 
 def fnd_logo_upload_to(instance, filename):
-    return f'fnd/{instance.alias}/logo/{filename}'
+    return f'fnd/{instance.alias}/images/logo/{filename}'
 
 class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin):
 	UPPER = 'layouts/upper.html'
@@ -87,7 +87,7 @@ class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin):
 		try:
 			url = self.logo.url
 		except:
-			url = static(settings.DEFAULT_IMAGE)
+			url = static(settings.DEFAULT_IMAGE['LOGO'])
 		return url
 
 	# def set_langs(self):

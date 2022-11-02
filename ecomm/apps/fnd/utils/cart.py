@@ -8,7 +8,7 @@ from ecomm.apps.fnd.models import (
 
 
 
-class Cart():
+class Cart:
 
 	def __init__(self, request):
 		self.session = request.session

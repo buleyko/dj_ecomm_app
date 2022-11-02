@@ -35,7 +35,8 @@ class Repeater2:
 # 	ProductBaseTranslation,
 # )
 
-
+class Comparison:
+    pass
 
 # class Comparison():
 # 	def __init__(self, request):

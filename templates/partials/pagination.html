@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<div class="flex justify-center align-center">
+    {% if page_obj.has_previous %}
+    <div class="border border-color radius-2 p-4 my-2">
+        <a class="text-decoration-none text-color" href="?page=1">&laquo;
+            {% translate "first" %}
+        </a>
+        <a class="text-decoration-none text-color" href="?page={{ page_obj.previous_page_number }}">
+            {% translate "previous" %}
+        </a>
+    </div>
+    {% endif %}
+    <div class="border border-color radius-2 p-4 my-2">
+        {% translate "Page" %} {{ page_obj.number }} {% translate "of" %} {{ page_obj.paginator.num_pages }}.
+    </div>
+    {% if page_obj.has_next %}
+    <div class="border border-color radius-2 p-4 my-2">
+        <a class="text-decoration-none text-color" href="?page={{ page_obj.next_page_number }}">
+            {% translate "next" %}
+        </a>
+        <a class="text-decoration-none text-color" href="?page={{ page_obj.paginator.num_pages }}">
+            {% translate "last" %} &raquo;
+        </a>
+    </div>
+    {% endif %}
+</div>

@@ -6,7 +6,8 @@
 # 	ProductBaseTranslation,
 # )
 
-
+class Wish:
+	pass
 
 # class Wish():
 # 	def __init__(self, request):
