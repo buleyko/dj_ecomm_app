@@ -46,11 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # apps
     'ecomm.apps.account.apps.AccountConfig',
-    #'ecomm.apps.fnd.apps.FndConfig',
+    'ecomm.apps.fnd.apps.FndConfig',
     # extensions
     'debug_toolbar',
-    #'mptt',
-    #'django_celery_results',
+    'mptt',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -174,6 +174,8 @@ REDIRECT_TO_IF_AUTHENTICATED = '/'
 LOGIN_REDIRECT_URL = '/account/dashboard/'
 LOGIN_URL = '/account/signin/'
 
+DEFAULT_IMAGE = 'images/placeholder.png'
+
 # SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -229,7 +231,7 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 
 # PAYPAL
-client_id = 'ARq8zA5Dbrdn3elQrn5k97H-NIDJSsDvLzHrqli1e0H2t0vLGyioRm2qwi1K0XGfAo-4_MfsbpeyfLzK'
-client_secret = 'EDd7Saj1aKGruvefK38zhqlssB-0IOad9j5lFs9nuaMxNH2n3HJmHGxFuwH74L3Xd0eGxfD_10b7Wtpm'
+CLIENT_ID = 'ARq8zA5Dbrdn3elQrn5k97H-NIDJSsDvLzHrqli1e0H2t0vLGyioRm2qwi1K0XGfAo-4_MfsbpeyfLzK'
+CLIENT_SECRET = 'EDd7Saj1aKGruvefK38zhqlssB-0IOad9j5lFs9nuaMxNH2n3HJmHGxFuwH74L3Xd0eGxfD_10b7Wtpm'
 test_pay_email = 'sb-4m5jo20987729@personal.example.com'
 test_pay_password ='3yH5.L7>'

@@ -40,6 +40,11 @@ class MetaDataMixin(models.Model):
 		null=True, 
 		blank=True
 	)
+	# meta_author = models.CharField(
+	# 	max_length=255, 
+	# 	null=True, 
+	# 	default='',
+	# )
 	
 	class Meta:
 		abstract = True
