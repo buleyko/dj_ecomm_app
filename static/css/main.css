@@ -3,12 +3,17 @@
 	--max-body-width: 1400px;
 	--height-navbar: 64px;
 
-	--base-val:  0.125rem;
+	--base-font-size: 18px;
+	--base-letter-spacing: 0em;
+	--base-line-height: 1.36em;
+
+	--base-val:  0.125em;
 	--hover-opacity: 0.8;
 
 	--font-weight-common: 500;
 	--font-weight-bold: 700;
 
+	--bg-html-color: #FFFFFF;
 	--bg-body-color: #FFFFFF;
 	--bg-content-color: #F0F0F0;
 	--bg-nav-color: #C0C0C0;
@@ -25,24 +30,24 @@
 	--bg-success-message-color: #90ee90;
 	--success-message-color: #FFFFFF;
 }
-html {
-	background: white;
-	scroll-behavior: smooth;
-}
 * {
 	margin: 0;
     padding: 0;
 }
+html {
+	background: var(--bg-html-color);
+	scroll-behavior: smooth;
+}
 body {
-	margin: 0 auto;
-	min-width: var(--min-body-width);
-	max-width: var(--max-body-width);
 	font-family: 'Montserrat', sans-serif;
 	background: var(--bg-body-color);
 	color: var(--text-color);
-	font-size: 18px;
-	letter-spacing: 0em;
-	line-height: 1.36em;
+	margin: 0 auto;
+	min-width: var(--min-body-width);
+	max-width: var(--max-body-width);
+	font-size: var(--base-font-size);
+	letter-spacing: var(--base-letter-spacing);
+	line-height: var(--base-line-height);
     font-weight: var(--font-weight-common);
 }
 button {

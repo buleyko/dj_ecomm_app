@@ -1,5 +1,6 @@
 const themes = {
     light: {
+        '--bg-html-color': '#FFFFFF',
         '--bg-body-color': '#FFFFFF',
         '--bg-content-color': '#F0F0F0',
         '--bg-nav-color': '#C0C0C0',
@@ -17,6 +18,7 @@ const themes = {
         
     },
     dark: {
+        '--bg-html-color': '#C0C0C0',
         '--bg-body-color': '#C0C0C0',
         '--bg-content-color': '#606060',
         '--bg-nav-color': '#404040',
@@ -59,7 +61,7 @@ class ThemeManager {
         });
     }
     next(theme) {
-        /* If theme key is null - get next from themes array */
+        /* If theme key is null - get next obj from themes obj */
         let currentThemeIndex = this.themesKeys.indexOf(theme);
         const nextIndex = (currentThemeIndex + 1) % this.themesKeys.length;
         return this.themesKeys[nextIndex];

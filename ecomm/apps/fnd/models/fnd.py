@@ -13,9 +13,10 @@ from ecomm.vendors.mixins.model import (
 from django.contrib.auth import get_user_model
 Account = get_user_model()
 
-
 def fnd_logo_upload_to(instance, filename):
     return f'fnd/{instance.alias}/images/logo/{filename}'
+
+
 
 class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin):
 	UPPER = 'layouts/upper.html'

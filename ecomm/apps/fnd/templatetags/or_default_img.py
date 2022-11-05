@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.filter(name='or_default_img')
 def or_default_img(value, key='PLACEHOLDER'):
-    ''' set default image by key , for imagefield in values '''
+    ''' set default image by key, for imagefield in values '''
     default_img = settings.DEFAULT_IMAGE[key]
     try:
         return static(default_img) if not value else f'{settings.MEDIA_URL}{value}'
