@@ -15,6 +15,7 @@ from ecomm.vendors.mixins.model import (
 	TimestampsMixin,
 	MetaDataMixin,
 )
+from django.db.models import F
 from django.contrib.auth import get_user_model
 Account = get_user_model()
 
@@ -219,11 +220,6 @@ class ProductBaseTranslation(MetaDataMixin):
 		verbose_name = _('Base product translation')
 		verbose_name_plural = _('Base product translations')
 
-	defer_values = [
-		'description',
-		'meta_keywords', 
-		'meta_description'
-	]
 
 
 def prod_thumb_upload_to(instance, filename):
@@ -317,6 +313,7 @@ class Product(BaseModel, TimestampsMixin, SoftdeleteMixin):
 	class Meta:
 		verbose_name = _('Product')
 		verbose_name_plural = _('Products')
+		ordering = ('-created_at',)
 
 	def thumbUrl(self):
 		try:
@@ -339,26 +336,11 @@ class Product(BaseModel, TimestampsMixin, SoftdeleteMixin):
 				thumb_img.save(self.thumb.path)
 
 	list_values = [
-		'id',
-		'prod_base__title',
-		'prod_base__translation__name',
-		'prod_base__translation__short_desc',
-		'thumb',
-		'ext_name',
-		'price',
+		'id', 
+		'prod_base_id', 
+		'prod_base__name', 
+		'thumb', 
+		'ext_name', 
+		'price', 
 		'sale_price',
-	]
-
-	defer_values = [
-		'sku',
-		'brand',
-		'product_type',
-		'attribute_values',
-		'is_default',
-		'is_digital',
-		'wish',
-		'compare',
-		'created_by',
-		'updated_by',
-		'fnd',
 	]

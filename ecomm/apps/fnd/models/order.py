@@ -77,12 +77,12 @@ class Order(BaseModel, TimestampsMixin, SoftdeleteMixin):
 class OrderProduct(BaseModel):
 	order = models.ForeignKey(
 		Order, 
-		related_name='order_orderprods', 
+		related_name='order_orderproducts', 
 		on_delete=models.CASCADE
 	)
 	product = models.ForeignKey(
 		'Product', 
-		related_name='prod_orderprods', 
+		related_name='prod_orderproducts', 
 		on_delete=models.CASCADE
 	)
 	price = models.DecimalField(
@@ -95,7 +95,7 @@ class OrderProduct(BaseModel):
 	fnd = models.ForeignKey(
 		'Fnd',
 		on_delete=models.CASCADE, 
-		related_name='fnd_order_prods',
+		related_name='fnd_order_products',
 	)
 
 	def __str__(self):

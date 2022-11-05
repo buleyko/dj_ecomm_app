@@ -4,6 +4,7 @@ from django.utils.translation import get_language
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib import messages
+from ecomm.apps.fnd.models import Order
 from django.shortcuts import (
 	render, 
 	redirect,
@@ -14,6 +15,11 @@ Account = get_user_model()
 
 @login_required
 @require_http_methods(['GET'])
-def dashboard(request):
-	current_language = get_language()
-	return render(request, 'apps/account/dashboard.html', {})
+def index(request):
+	number_of_orders = Order.objs.fnd().valid().\
+		filter(account_id=request.user.id).\
+		filter(billing_status=True).\
+		count()
+	return render(request, 'apps/account/dashboard.html', {
+		'number_of_orders': number_of_orders,
+	})

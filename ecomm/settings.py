@@ -63,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # custom
+    'ecomm.apps.fnd.middlewares.language.language_middleware',
 ]
 
 ROOT_URLCONF = 'ecomm.urls'

@@ -10,31 +10,19 @@ from django.shortcuts import (
 	redirect,
 )
 from django.db.models import Sum
-from ecomm.apps.fnd.models import (
-	Order,
-	OrderProduct,
-)
+from ecomm.apps.fnd.models import Order
 from django.contrib.auth import get_user_model
 Account = get_user_model()
 
 
 @login_required
 @require_http_methods(['GET'])
-def dashboard(request):
-	current_language = get_language()
-	return render(request, 'apps/account/dashboard.html', {})
-
-
-@login_required
-@require_http_methods(['GET'])
-def orders(request):
+def index(request):
 	orders = Order.objs.fnd().valid().\
-		filter(account_id=request.user.id).filter(billing_status=True).\
-		order_by('-created_at').\
-		prefetch_related('order_orderprods').\
-		annotate(total_amount=Sum('order_orderprods__quantity'))
-		
-	page_obj = with_pagination(request, orders)
+		filter(account_id=request.user.id).\
+		filter(billing_status=True).\
+		annotate(total_amount=Sum('order_orderproducts__quantity'))
+
 	return render(request, 'apps/account/orders.html', {
-		'page_obj': page_obj,
+		'page_obj': with_pagination(request, orders),
 	})

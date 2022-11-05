@@ -1,6 +1,5 @@
 /venv
 /.pytest_cache
-**/migrations/
 **/__pycache__/
 /media/*
 /log/*

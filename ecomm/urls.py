@@ -16,17 +16,18 @@ from django.conf.urls import (
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', include([ # <slug:alias>/
-        # path('account/', include('ecomm.apps.account.urls', namespace='account')),
+    path('', include([
+        path('account/', include('ecomm.apps.account.urls', namespace='account')),
         path('', include('ecomm.apps.fnd.urls', namespace='fnd')),
     ])),
     re_path(r'^i18n/', include('django.conf.urls.i18n')),
-
-    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [
+        path('__debug__/', include('debug_toolbar.urls')),
+        *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+    ]
 
 handler404 = 'ecomm.apps.fnd.views.fnd.error_404'
 handler500 = 'ecomm.apps.fnd.views.fnd.error_500'

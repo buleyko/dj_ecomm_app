@@ -53,6 +53,14 @@ body {
 button {
 	all: initial;
 }
+button:disabled,
+button[disabled] {
+	opacity: var(--hover-opacity);
+	cursor: not-allowed;
+}
+svg {
+    pointer-events: none;
+}
 h1, h2, h3 {
 	font-weight: var(--font-weight-bold);
 	line-height: 1.4em;
@@ -66,4 +74,229 @@ h2 {
 }
 h3 {
 	font-size: 30px;
+}
+
+
+/* =========================================================================================== */
+/* -------------------------------------- animatioms ----------------------------------------- */
+/* =========================================================================================== */
+.wish {
+	animation: 0.2s ease-in forwards wish;
+}
+.unwish {
+	animation: 0.2s ease-in forwards unwish;
+}
+
+@keyframes wish {
+	0% {
+		fill: transparent;
+		transform: scale(1.0, 1.0);
+	}
+	50% {
+		transform: scale(0.9, 0.9);
+	}
+	100% {
+		fill: var(--wish-color);
+		transform: scale(1.0, 1.0);
+	}
+}
+@keyframes unwish {
+	0% {
+		fill: var(--wish-color);
+		transform: scale(1.0, 1.0);
+	}
+	50% {
+		transform: scale(0.9, 0.9);
+	}
+	100% {
+		fill: transparent;
+		transform: scale(1.0, 1.0);
+	}
+}
+.wished_scale {
+	animation: 0.2s ease-in forwards wished_scale;
+}
+@keyframes wished_scale {
+	0% {
+		transform: scale(1.0, 1.0);
+	}
+	50% {
+		transform: scale(0.9, 0.9);
+	}
+	100% {
+		transform: scale(1.0, 1.0);
+	}
+}
+
+.compare {
+	animation: 0.2s ease-in forwards compare;
+}
+.uncompare {
+	animation: 0.2s ease-in forwards uncompare;
+}
+
+@keyframes compare {
+	0% {
+		fill: transparent;
+		transform: scale(1.0, 1.0);
+	}
+	50% {
+		transform: scale(0.9, 0.9);
+	}
+	100% {
+		fill: var(--compare-color);
+		transform: scale(1.0, 1.0);
+	}
+}
+@keyframes uncompare {
+	0% {
+		fill: var(--compare-color);
+		transform: scale(1.0, 1.0);
+	}
+	50% {
+		transform: scale(0.9, 0.9);
+	}
+	100% {
+		fill: transparent;
+		transform: scale(1.0, 1.0);
+	}
+}
+
+.compared_scale {
+	animation: 0.2s ease-in forwards compared_scale;
+}
+@keyframes compared_scale {
+	0% {
+		transform: scale(1.0, 1.0);
+	}
+	50% {
+		transform: scale(0.9, 0.9);
+	}
+	100% {
+		transform: scale(1.0, 1.0);
+	}
+}
+.box_scale {
+	animation: 0.2s ease-in forwards box_scale;
+}
+@keyframes box_scale {
+	0% {
+		transform: scale(1.0, 1.0);
+	}
+	50% {
+		transform: scale(0.8, 0.8);
+	}
+	100% {
+		transform: scale(1.0, 1.0);
+	}
+}
+
+
+/* =========================================================================================== */
+/* -------------------------------------- common --------------------------------------------- */
+/* =========================================================================================== */
+.text-color {
+	color: var(--text-color);
+}
+.bg-nav-color {
+	background: var(--bg-nav-color);
+}
+.bg-content-color {
+	background: var(--bg-content-color);
+}
+.bg-footer-color {
+	background: var(--bg-footer-color);
+}
+.border-color {
+	border-color: var(--border-color);
+}
+.shadow-2 {
+	box-shadow: var(--base-val) calc(var(--base-val) * 2) var(--box-shadow-color);
+}
+.flex {
+	display: flex;
+}
+.col {
+	flex-direction: column;
+}
+.wrap {
+	flex-wrap: wrap;
+}
+.no-wrap {
+	flex-wrap: nowrap;
+}
+.flex-1 {
+	flex-shrink: 1; 
+	flex-grow: 1; 
+	flex-basis: 0;
+}
+.flex-2 {
+	flex-shrink: 2; 
+	flex-grow: 2; 
+	flex-basis: 0;
+}
+.flex-3 {
+	flex-shrink: 3; 
+	flex-grow: 3; 
+	flex-basis: 0;
+}
+.justify-center {
+	justify-content: center;
+}
+.justify-between {
+	justify-content: space-between;
+}
+.justify-around {
+	justify-content: space-around;
+}
+.justify-end {
+	justify-content: flex-end;
+}
+.items-arount {
+	justify-items: space-around;
+}
+.items-between {
+	justify-items: space-between;
+}
+.items-center {
+	justify-items: center;
+}
+.align-center {
+	align-items: center;
+}
+.align-start {
+	align-items: flex-start;
+}
+.align-end {
+	align-items: flex-end;
+}
+.self-center {
+	align-self: center;
+}
+.self-start {
+	align-self: flex-start;
+}
+.self-end {
+	align-self: flex-end;
+}
+.relative {
+	position: relative;
+}
+.absolute {
+	position: absolute;
+}
+.fixed {
+	position: fixed;
+}
+.pointer {
+	cursor: pointer;
+}
+.hidden {
+	display: none;
+}
+.list-style-none {
+	list-style: none;
+}
+.text-decoration-none {
+	text-decoration: none;
 }

@@ -1,4 +1,5 @@
 import factory
+from django.conf import settings
 from faker import Faker
 fake = Faker()
 
@@ -10,14 +11,17 @@ class FndFactory(factory.django.DjangoModelFactory):
         model = models.Fnd 
 
     alias = factory.Sequence(lambda n: f'fnd_{n}')
-    langs = [{'lang': 'en', 'is_default': True}, {'lang': 'ru', 'is_default': False}]
+    name = {'en':'Foundation-EN', 'ru':'Foundation-RU'}
+    langs = [
+        {'code': 'en', 'title':'EN', 'is_default': True}, 
+        {'lang': 'ru', 'title':'RU',  'is_default': False},
+    ]
     is_shown = 'True'
 
 class FndTranslationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.FndTranslation
 
-    name = fake.lexify(text='fnd_??????')
     description = fake.text()
-    lang = factory.SubFactory(LangFactory)
+    lang = settings.LANGUAGE_CODE
     fnd = factory.SubFactory(FndFactory)

@@ -5,142 +5,125 @@ from ecomm.apps.fnd.models import (
 	Delivery,
 )
 
+
 class Cart:
-    pass
+	def __init__(self, request):
+		self.session = request.session
+		cart = self.session.get('cart')
+		if 'cart' not in request.session:
+			cart = self.session['cart'] = {}
+		self.cart = cart
 
-# class Cart:
+	def __iter__(self):
+		product_ids = self.cart.keys()
+		products = Product.objs.fnd().valid().shown().\
+			filter(id__in=product_ids).values(*Product.list_values)
 
-# 	def __init__(self, request):
-# 		self.session = request.session
-# 		cart = self.session.get('cart')
-# 		if 'cart' not in request.session:
-# 			cart = self.session['cart'] = {}
-# 		self.cart = cart
+		cart = self.cart.copy()
 
-# 	def __iter__(self):
-# 		product_ids = self.cart.keys()
-# 		# products = Product.objs.fnd().valid().shown().\
-# 		# 	filter(id__in=product_ids).values(*Product.list_values)
+		for product in products:
+			cart[str(product['id'])]['product'] = product
 
-# 		products = Product.objs.fnd().valid().shown().\
-# 			filter(id__in=product_ids).values(
-# 				'id', 'prod_base_id', 'prod_base__title', 'thumb', 'ext_name', 'price', 'sale_price',
-# 			)
-# 		base_prod_ids = [prod['prod_base_id'] for prod in products]
-# 		translations = ProductBaseTranslation.objs.\
-# 			filter(prod_base_id__in=base_prod_ids).\
-# 			filter(lang_id=get_language()).values(
-# 				'name', 'prod_base_id',
-# 			)
-# 		for prod in products:
-# 			prod['tr'] = {key: val for tr in translations for key, val in tr.items() if tr['prod_base_id'] == prod['prod_base_id']}
+		for item in cart.values():
+			item['price'] = Decimal(item['price'])
+			item['total_price'] = item['price'] * item['quantity']
+			yield item
 
-# 		cart = self.cart.copy()
+	def __len__(self):
+		return sum(item['quantity'] for item in self.cart.values())
 
-# 		for product in products:
-# 			cart[str(product['id'])]['product'] = product
+	def add(self, product, quantity):
+		product_id = str(product.id)
+		if product_id in self.cart:
+			self.cart[product_id]['quantity'] = quantity
+		else:
+			self.cart[product_id] = {'price': str(product.price), 'quantity': quantity}
+		self.save()
 
-# 		for item in cart.values():
-# 			item['price'] = Decimal(item['price'])
-# 			item['total_price'] = item['price'] * item['quantity']
-# 			yield item
+	def get_product_ids(self):
+		return [int(i) for i in self.cart.keys()]
 
-# 	def __len__(self):
-# 		return sum(item['quantity'] for item in self.cart.values())
+	def update(self, product, quantity):
+		product_id = str(product)
+		if product_id in self.cart:
+			self.cart[product_id]['quantity'] = quantity
+		self.save()
 
-# 	def add(self, product, quantity):
-# 		product_id = str(product.id)
+	def get_total_price(self):
+		newprice = 0.00
+		subtotal = sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
-# 		if product_id in self.cart:
-# 			self.cart[product_id]['quantity'] = quantity
-# 		else:
-# 			self.cart[product_id] = {'price': str(product.price), 'quantity': quantity}
-# 		self.save()
+		if 'purchase' in self.session:
+			newprice = Delivery.objs.fnd().get(id=self.session['purchase']['delivery_id']).price
 
-# 	def get_product_ids(self):
-# 		return [int(i) for i in self.cart.keys()]
+		total = subtotal + Decimal(newprice)
+		return total
 
-# 	def update(self, product, quantity):
-# 		product_id = str(product)
-# 		if product_id in self.cart:
-# 			self.cart[product_id]['quantity'] = quantity
-# 		self.save()
+	def get_subtotal_price(self):
+		return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
-# 	def get_total_price(self):
-# 		newprice = 0.00
-# 		subtotal = sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+	def get_product_quantity(self, product_id):
+		item = self.cart.get(str(product_id), None)
+		if item:
+			return item['quantity']
 
-# 		if 'purchase' in self.session:
-# 			newprice = Delivery.objs.fnd().get(id=self.session['purchase']['delivery_id']).price
+	def get_product_total_price(self, product_id):
+		item = self.cart.get(str(product_id), None)
+		if item:
+			return Decimal(item['price']) * item['quantity']
 
-# 		total = subtotal + Decimal(newprice)
-# 		return total
+	def get_delivery_price(self):
+		newprice = 0.00
+		if 'purchase' in self.session:
+			newprice = Delivery.objs.fnd().get(id=self.session['purchase']['delivery_id']).price
 
-# 	def get_subtotal_price(self):
-# 		return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+		return newprice
 
-# 	def get_product_quantity(self, product_id):
-# 		item = self.cart.get(str(product_id), None)
-# 		if item:
-# 			return item['quantity']
+	def add_delivery(self, delivery_id):
+		if 'purchase' not in self.session:
+			self.session['purchase'] = {
+				'delivery_id': delivery_id,
+			}
+		else:
+			self.session['purchase']['delivery_id'] = delivery_id
+			self.save()
 
-# 	def get_product_total_price(self, product_id):
-# 		item = self.cart.get(str(product_id), None)
-# 		if item:
-# 			return Decimal(item['price']) * item['quantity']
-
-# 	def get_delivery_price(self):
-# 		newprice = 0.00
-# 		if 'purchase' in self.session:
-# 			newprice = Delivery.objs.fnd().get(id=self.session['purchase']['delivery_id']).price
-
-# 		return newprice
-
-# 	def add_delivery(self, delivery_id):
-# 		if 'purchase' not in self.session:
-# 			self.session['purchase'] = {
-# 				'delivery_id': delivery_id,
-# 			}
-# 		else:
-# 			self.session['purchase']['delivery_id'] = delivery_id
-# 			self.save()
-
-# 	def get_delivery_id(self):
-# 		delivery_id = 0
-# 		if 'purchase' in self.session:
-# 			delivery_id = self.session['purchase']['delivery_id']
-# 		return delivery_id
+	def get_delivery_id(self):
+		delivery_id = 0
+		if 'purchase' in self.session:
+			delivery_id = self.session['purchase']['delivery_id']
+		return delivery_id
 		
-# 	def update_delivery(self, deliveryprice=0):
-# 		subtotal = sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
-# 		total = subtotal + Decimal(deliveryprice)
-# 		return total
+	def update_delivery(self, deliveryprice=0):
+		subtotal = sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+		total = subtotal + Decimal(deliveryprice)
+		return total
 
-# 	def delete(self, product):
-# 		product_id = str(product)
+	def delete(self, product):
+		product_id = str(product)
 
-# 		if product_id in self.cart:
-# 			del self.cart[product_id]
-# 			self.save()
+		if product_id in self.cart:
+			del self.cart[product_id]
+			self.save()
 
-# 	def clear(self, key=None):
-# 		# Remove cart from session
-# 		if key is None:
-# 			del self.session['cart']
-# 			try:
-# 				del self.session['address']
-# 			except KeyError:
-# 				pass
-# 			try:
-# 				del self.session['purchase']
-# 			except KeyError:
-# 				pass
-# 		else:
-# 			try:
-# 				del self.session[key]
-# 			except KeyError:
-# 				pass
-# 		self.save()
+	def clear(self, key=None):
+		# Remove cart from session
+		if key is None:
+			del self.session['cart']
+			try:
+				del self.session['address']
+			except KeyError:
+				pass
+			try:
+				del self.session['purchase']
+			except KeyError:
+				pass
+		else:
+			try:
+				del self.session[key]
+			except KeyError:
+				pass
+		self.save()
 		
-# 	def save(self):
-# 		self.session.modified = True
+	def save(self):
+		self.session.modified = True

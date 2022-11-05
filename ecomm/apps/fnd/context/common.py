@@ -6,16 +6,22 @@ from django.http import Http404
 from ecomm.apps.fnd.models import (
 	Fnd,
 )
-# from ecomm.apps.fnd.utils import (
-# 	Cart, 
-# 	Wish, 
-# 	Comparison,
-# )
+from ecomm.apps.fnd.utils import (
+	Cart, 
+	Wish, 
+	Comparison,
+)
 
 
 def context_processor(request):
 	current_language = get_language()
+	cart = Cart(request)
+	wish = Wish(request)
+	comparison = Comparison(request)
 	
 	return {
 		'fnd': None,
+		'cart': cart,
+		'wish': wish,
+		'comparison': comparison,
 	}
