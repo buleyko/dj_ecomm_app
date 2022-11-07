@@ -19,8 +19,8 @@ class DeliveryAdmin(AdminBaseModel, ExcludeTimestampsMixin):
 				'name',
 				'price',
 				'method',
-				'timeframe',
-				'timewindow',
+				'time_frame',
+				'time_window',
 				'position', 
 				'fnd',
 			)

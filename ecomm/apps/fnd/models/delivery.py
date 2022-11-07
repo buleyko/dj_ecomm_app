@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 from ecomm.vendors.base.model import BaseModel
 from ecomm.vendors.mixins.model import NameByLangMixin
@@ -18,9 +19,7 @@ class Delivery(BaseModel, NameByLangMixin):
 		(DD, _('Digital Delivery')),
 	]
 	name = models.JSONField(
-		verbose_name=_('delivery_name'),
 		help_text=_('Required'),
-		max_length=255,
 	)
 	price = models.DecimalField(
 		verbose_name=_('delivery price'),
@@ -70,7 +69,7 @@ class Delivery(BaseModel, NameByLangMixin):
 		ordering = ['position']
 
 	def __str__(self):
-		return self.name
+		return self.get_name_by(get_language())
 
 	list_values = [
 		'id',

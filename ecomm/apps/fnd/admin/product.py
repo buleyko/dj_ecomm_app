@@ -81,7 +81,7 @@ class MediaInline(admin.StackedInline):
 		(None, {
 			'fields': (
 				('product', ),
-				'img_url',
+				'img',
 				'alt_text',
 				'is_feature',
 				'fnd',

@@ -43,10 +43,9 @@ class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin, NameByLangMixin):
 		(LIGHT, _('Light')),
 		(DARK,  _('Dark')),
 	]
-	slug = models.SlugField(
-		max_length=80,
-		unique=True,
-		verbose_name=_('Foundation URL'),
+	alias = models.CharField(
+		max_length=30, 
+		primary_key=True
 	)
 	name = models.JSONField(
 		max_length=80, 
@@ -83,7 +82,7 @@ class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin, NameByLangMixin):
 		verbose_name_plural = _('Foundations')
 
 	def __str__(self):
-		return self.slug
+		return self.alias
 
 	def logoUrl(self):
 		try:

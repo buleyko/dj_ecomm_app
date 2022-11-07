@@ -34,7 +34,7 @@ class FndAdmin(AdminBaseModel, ExcludeTimestampsMixin):
 		(None, {
 			'fields': (
 				('is_shown', 'is_blocked',), 
-				'slug', 
+				'alias', 
 				'name',
 				'main_layout', 
 				'content_layout', 
@@ -44,11 +44,11 @@ class FndAdmin(AdminBaseModel, ExcludeTimestampsMixin):
 		}),
 	)
 	list_display = [
-		'slug', 
+		'alias', 
 		'get_name',
 	]
 	list_filter = [
-		'slug',
+		'alias',
 	]
 	inlines = [
 		FndTranslationInline,

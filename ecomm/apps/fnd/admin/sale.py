@@ -21,12 +21,13 @@ class SaleTypeAdmin(AdminBaseModel, ExcludeTimestampsMixin):
 
 
 @admin.register(Coupon)
-class CouponAdmin(AdminBaseModel, ExcludeTimestampsMixin):
+class CouponAdmin(AdminBaseModel):
 	fieldsets = (
 		(None, {
 			'fields': (
 				('is_shown', 'is_blocked',), 
 				'slug',
+				'name',
 				'coupon_code',
 				'created_by',
 				'fnd',

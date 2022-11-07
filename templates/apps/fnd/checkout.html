@@ -1,0 +1,93 @@
+{% extends store.main_layout|default:'layouts/upper.html' %}
+{% load static %} 
+{% load i18n %}
+{% load cart_product_qty %}
+{% load or_default_img %}
+{% load by_lang %}
+
+
+{% block content %}
+    <div>
+        
+    </div>
+{% endblock content %} 
+
+{% block page_script %}
+<script src="https://www.paypal.com/sdk/js?client-id=ARq8zA5Dbrdn3elQrn5k97H-NIDJSsDvLzHrqli1e0H2t0vLGyioRm2qwi1K0XGfAo-4_MfsbpeyfLzK"></script>
+<script>
+    const inputWatchHandler = (condition) => {
+        console.log(condition)
+        let paypalBtnsContinue = document.querySelector('#paypalBtns');
+        let paypalBtnsElem = document.querySelector('#paypal-button-container');
+        if (condition) {
+            paypalBtnsContinue.disabled = false;
+        } else {
+            paypalBtnsContinue.disabled = true;
+            paypalBtnsElem.innerHTML = '';
+        }
+    }
+    const inputWatcher = new InputWatcher({
+        obserEvent: 'keyup',
+        obserElementsSelector: '.checkout input',
+        handler: inputWatchHandler,
+    })
+    function initPayPalButtons() {
+        const totalPrice = '{{ cart.get_total_price }}';
+
+        const buyerData = {
+            'name': document.querySelector('input[name="order_name"]').value,
+            'email': document.querySelector('input[name="order_email"]').value,
+            'address': document.querySelector('input[name="order_address"]').value,
+            'post': document.querySelector('input[name="order_post"]').value,
+            'country': document.querySelector('input[name="order_country"]').value,
+        }
+
+        paypal.Buttons({
+            style: {
+                shape: 'rect',
+                color: 'gold',
+                layout: 'vertical',
+                label: 'paypal',
+            },
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            'currency_code': 'USD',
+                            'value': parseFloat(totalPrice).toFixed(2),
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+
+                var url = '{% url "fnd:checkout_payment_complete" %}'
+                return fetch(url, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID,
+                        buyerData: buyerData,     
+                    })
+                })
+                .then(function(data) {
+                    if (data.status == 200) {
+                        location.href = '{% url "fnd:checkout_payment_successful" %}'
+                    }
+                    if (data.status == 500) {
+                        alert('error: order adding to data base');
+                    }
+                })
+            },
+        }).render('#paypal-button-container');
+    }
+    function showPayPalBtns() {
+        if (document.querySelector('#paypal-button-container').innerHTML == '') {
+            initPayPalButtons();
+        }
+    }
+</script>
+{% endblock page_script %} 
