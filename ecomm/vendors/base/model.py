@@ -77,4 +77,10 @@ class BaseModel(models.Model):
 class AdminBaseModel(admin.ModelAdmin):
     empty_value_display = settings.EMPTY_VALUE
 
+    exclude = (
+		'created_at', 
+		'updated_at', 
+		'deleted_at',
+	)
+
 	

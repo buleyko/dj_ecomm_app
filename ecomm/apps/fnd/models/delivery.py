@@ -2,12 +2,13 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from ecomm.vendors.base.model import BaseModel
+from ecomm.vendors.mixins.model import NameByLangMixin
 from django.contrib.auth import get_user_model
 Account = get_user_model()
 
 
 
-class Delivery(BaseModel):
+class Delivery(BaseModel, NameByLangMixin):
 	IS = 'IS' 
 	HD = 'HD'
 	DD = 'DD'

@@ -9,6 +9,7 @@ from ecomm.vendors.mixins.model import (
 	SoftdeleteMixin, 
 	TimestampsMixin,
 	MetaDataMixin,
+	NameByLangMixin,
 )
 from django.contrib.auth import get_user_model
 Account = get_user_model()
@@ -18,7 +19,7 @@ def fnd_logo_upload_to(instance, filename):
 
 
 
-class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin):
+class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin, NameByLangMixin):
 	UPPER = 'layouts/upper.html'
 	LOWER = 'layouts/lower.html'
 	LEFT  = 'layouts/left.html'
@@ -42,10 +43,10 @@ class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin):
 		(LIGHT, _('Light')),
 		(DARK,  _('Dark')),
 	]
-
-	alias = models.CharField(
-		max_length=30, 
-		primary_key=True
+	slug = models.SlugField(
+		max_length=80,
+		unique=True,
+		verbose_name=_('Foundation URL'),
 	)
 	name = models.JSONField(
 		max_length=80, 
@@ -82,7 +83,7 @@ class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin):
 		verbose_name_plural = _('Foundations')
 
 	def __str__(self):
-		return self.alias
+		return self.slug
 
 	def logoUrl(self):
 		try:

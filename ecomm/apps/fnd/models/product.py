@@ -14,6 +14,7 @@ from ecomm.vendors.mixins.model import (
 	SoftdeleteMixin, 
 	TimestampsMixin,
 	MetaDataMixin,
+	NameByLangMixin,
 )
 from django.db.models import F
 from django.contrib.auth import get_user_model
@@ -21,12 +22,12 @@ Account = get_user_model()
 
 
 
-class ProductAttribute(BaseModel):
+class ProductAttribute(BaseModel, NameByLangMixin):
 	slug = models.SlugField(
 		max_length=255,
 		unique=True,
 	)
-	trs = models.JSONField(
+	name = models.JSONField(
 		null=True, 
 		blank=True
 	)
@@ -38,12 +39,6 @@ class ProductAttribute(BaseModel):
 
 	def __str__(self):
 		return self.slug
-
-	def name(self):
-		try:
-			return self.trs[get_language()]
-		except:
-			return self.slug
 
 	class Meta:
 		verbose_name = _('Product attribute')
@@ -63,7 +58,7 @@ class ProductAttributeValue(BaseModel):
 		null=True, 
 		blank=True
 	)
-	def tr_val(self):
+	def trs_val(self):
 		try:
 			return self.trs[get_language()]
 		except:
@@ -73,16 +68,12 @@ class ProductAttributeValue(BaseModel):
 		return f'{self.product_attribute} ({self.value})'
 
 
-class ProductType(BaseModel):
+class ProductType(BaseModel, NameByLangMixin):
 	slug = models.SlugField(
 		max_length=255,
 		unique=True,
 	)
-	title = models.CharField(
-		max_length=80, 
-		null=True, 
-		blank=True
-	)
+	name = models.JSONField()
 	category = models.ForeignKey(
 		'Category',
 		related_name='types',
@@ -95,10 +86,6 @@ class ProductType(BaseModel):
 		related_name='types',
 		through='ProductTypeAttribute',
 	)
-	trs = models.JSONField(
-		null=True, 
-		blank=True
-	)
 	fnd = models.ForeignKey(
 		'Fnd',
 		on_delete=models.CASCADE, 
@@ -107,12 +94,6 @@ class ProductType(BaseModel):
 
 	def __str__(self):
 		return self.slug
-
-	def name(self):
-		try:
-			return self.trs[get_language()]
-		except:
-			return self.slug
 
 	class Meta:
 		verbose_name = _('Product type')
@@ -149,15 +130,13 @@ class ProductAttributeValues(BaseModel):
 
 
 
-class ProductBase(BaseModel, TimestampsMixin, SoftdeleteMixin):
+class ProductBase(BaseModel, TimestampsMixin, SoftdeleteMixin, NameByLangMixin):
 	slug = models.SlugField(
 		max_length=180,
 		unique=True,
 		verbose_name=_('Product(base) URL'),
 	)
-	name = models.JSONField(
-		max_length=500,
-	)
+	name = models.JSONField()
 	short_desc = models.JSONField(
 		null=True, 
 		blank=True
@@ -192,7 +171,7 @@ class ProductBase(BaseModel, TimestampsMixin, SoftdeleteMixin):
 		verbose_name_plural = _('Base products')
 
 	def __str__(self):
-		return self.title
+		return self.slug
 
 	defer_values = [
 		'created_by',

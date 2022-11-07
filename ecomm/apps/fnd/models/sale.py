@@ -10,6 +10,7 @@ from ecomm.vendors.mixins.model import (
 	SoftdeleteMixin, 
 	TimestampsMixin,
 	MetaDataMixin,
+	NameByLangMixin,
 )
 from decimal import Decimal
 from django.contrib.auth import get_user_model
@@ -17,7 +18,7 @@ Account = get_user_model()
 
 
 
-class SaleType(BaseModel, TimestampsMixin, SoftdeleteMixin):
+class SaleType(BaseModel, NameByLangMixin):
 	slug = models.SlugField(
 		max_length=80, 
 		unique=True
@@ -51,7 +52,7 @@ class SaleType(BaseModel, TimestampsMixin, SoftdeleteMixin):
 		verbose_name_plural = _('Sale types')
 
 
-class Coupon(BaseModel, TimestampsMixin, SoftdeleteMixin):
+class Coupon(BaseModel, NameByLangMixin):
 	slug = models.SlugField(
 		max_length=255, 
 		unique=True

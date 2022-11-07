@@ -48,3 +48,20 @@ class MetaDataMixin(models.Model):
 	
 	class Meta:
 		abstract = True
+
+
+class NameByLangMixin:
+	def get_name_by(self, lang):
+		name = self.name.get(lang, False)
+		if not name:
+			name = self.name.get('title', None)
+		return name
+
+
+
+class ExcludeTimestampsMixin:
+	exclude = (
+		'created_at', 
+		'updated_at', 
+		'deleted_at',
+	)

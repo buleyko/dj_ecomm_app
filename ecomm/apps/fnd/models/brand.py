@@ -5,6 +5,7 @@ from ecomm.vendors.base.model import BaseModel
 from ecomm.vendors.mixins.model import (
 	SoftdeleteMixin, 
 	TimestampsMixin,
+	NameByLangMixin,
 )
 from django.contrib.auth import get_user_model
 Account = get_user_model()
@@ -13,7 +14,7 @@ def brand_logo_upload_to(instance, filename):
     return f'fnd/{instance.fnd_id}/brand/{instance.slug}/{filename}'
 
 
-class Brand(BaseModel, TimestampsMixin, SoftdeleteMixin):
+class Brand(BaseModel, TimestampsMixin, SoftdeleteMixin, NameByLangMixin):
 	slug = models.SlugField(
 		max_length=180,
 		unique=True,
@@ -55,4 +56,4 @@ class Brand(BaseModel, TimestampsMixin, SoftdeleteMixin):
 		verbose_name_plural = _('Brands')
 
 	def __str__(self):
-		return self.title
+		return self.slug

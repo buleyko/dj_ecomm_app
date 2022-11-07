@@ -11,6 +11,7 @@ from ecomm.vendors.base.model import BaseModel
 from ecomm.vendors.mixins.model import (
 	SoftdeleteMixin, 
 	TimestampsMixin,
+	NameByLangMixin,
 )
 from django.contrib.auth import get_user_model
 Account = get_user_model()
@@ -20,7 +21,7 @@ def cat_thumb_upload_to(instance, filename):
 
 
 
-class Category(MPTTModel, BaseModel, TimestampsMixin, SoftdeleteMixin):
+class Category(MPTTModel, BaseModel, TimestampsMixin, SoftdeleteMixin, NameByLangMixin):
 	slug = models.SlugField(
 		max_length=150,
 		unique=True,

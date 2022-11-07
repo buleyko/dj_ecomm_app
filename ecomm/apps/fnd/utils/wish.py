@@ -36,7 +36,7 @@ class Wish:
 	def delete(self, product_id):
 		product_id = str(product_id)
 		if product_id in self.wish:
-			self.wish(product_id)
+			self.wish.remove(product_id)
 			self.save()
 
 	def clear(self):
