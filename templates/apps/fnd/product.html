@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load cart_product_qty %}
 {% load by_lang %}
+{% load to_str %}
 
 
 {% block content %}
@@ -37,7 +38,7 @@
                 <div class="flex justify-center align-center">
                     <div class="act relative mr-6">
                         <div class="absolute full" onclick="wish.toggle()" data-prodid="{{ product.id }}">
-                            <svg width="28px" height="28px" class="prod-wish {% if product.id in wishlist %}wished{% endif %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
+                            <svg width="28px" height="28px" class="prod-wish {% if product.id|to_str in wishlist %}wished{% endif %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
                                 stroke="currentColor"
                                 stroke-width="1"
                                 stroke-linecap="round" stroke-linejoin="round" fill="transparent">
@@ -47,7 +48,7 @@
                     </div>
                     <div class="act relative ml-6">
                         <div class="absolute full w-80" onclick="compare.toggle()" data-prodid="{{ product.id }}">
-                            <svg width="24px" height="24px" class="prod-compare {% if product.id in comparelist %}compared{% endif %}"  xmlns="http://www.w3.org/2000/svg" 
+                            <svg width="24px" height="24px" class="prod-compare {% if product.id|to_str in comparelist %}compared{% endif %}"  xmlns="http://www.w3.org/2000/svg" 
                                 viewBox="0 0 16 16" 
                                 stroke="currentColor"
                                 stroke-width="1"

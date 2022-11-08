@@ -31,7 +31,7 @@ def show(request, prod_slug):
     attrs = ProductTypeAttribute.objs.filter(prod_type__prod__slug=product.slug).\
         values(
             slug=F('prod_attribute__slug'), 
-            tr=F('prod_attribute__trs')
+            name=F('prod_attribute__name')
         ).distinct()
 
     attr_values = Product.objs.fnd().valid().shown().filter(is_default=True).\

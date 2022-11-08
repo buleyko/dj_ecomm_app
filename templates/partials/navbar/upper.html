@@ -41,13 +41,13 @@
 						</div>
 					    {% recursetree categories %}
 					        <div class="p-2">
-					            {{ node.get_name_by }}
+					            <span class="pointer">
+					            	<a class="text-decoration-none text-color" href="{% url 'fnd:category' node.slug %}">
+					            		{{ node.get_name_by }}
+					            	</a>
+					            </span>
 					            {% if not node.is_leaf_node %}
-					                <span class="pointer">
-					            		<a class="text-decoration-none text-color" href="{% url 'fnd:category' node.slug %}">
-					            			{{ children }}
-					            		</a>
-					            	</span>
+					            	{{ children }}
 					            {% endif %}
 					        </div>
 					    {% endrecursetree %}
@@ -198,13 +198,13 @@
 		<div id="categories-list" class="absolute z-1 text-color bg-nav-color p-8 hidden">
 		    {% recursetree categories %}
 		        <ul class="p-2">
-		            {{ node.get_name_by }}
+		        	<li class="list-style-none p-4 pointer">
+		            	<a class="text-decoration-none text-color" href="{% url 'fnd:category' node.slug %}">
+		            		{{ node.get_name_by }}
+		            	</a>
+		            </li>
 		            {% if not node.is_leaf_node %}
-		                <li class="list-style-none p-4 pointer">
-		            		<a class="text-decoration-none text-color" href="{% url 'fnd:category' node.slug %}">
-		            			{{ children }}
-		            		</a>
-		            	</li>
+		            	{{ children }}
 		            {% endif %}
 		        </ul>
 		    {% endrecursetree %}

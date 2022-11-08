@@ -185,6 +185,11 @@ DEFAULT_IMAGE = {
     'ICON': 'images/icons.png',
 }
 
+AUTHENTICATION_BACKENDS = [
+    'ecomm.vendors.utils.backend.AccountBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 # SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

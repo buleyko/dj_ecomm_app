@@ -1,6 +1,7 @@
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import get_language
+from ecomm.vendors.helpers.pagination import with_pagination
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import ( 
@@ -9,7 +10,12 @@ from django.shortcuts import (
     redirect,
 )
 import json
+from django.db.models import F
 from ecomm.apps.fnd.utils.cart import Cart
+from ecomm.vendors.helpers.request import (
+    get_filter_arguments,
+    get_search_argument,
+)
 from ecomm.apps.fnd.models import (
     Category,
     Product,
@@ -22,12 +28,9 @@ def show(request, cat_slug):
     filter_arguments = get_filter_arguments(request)
     search_argument = get_search_argument(request)
 
-    category = Category.objs.fnd().valid().shown().filter(slug=_id).\
-        prefetch_translation_by(
-            CategoryTranslation, 
-            current_language,
-            defers=CategoryTranslation.defer_values
-        ).first()
+    category = Category.objs.fnd().valid().shown().\
+        filter(slug=cat_slug).\
+        first()
     if category is None:
         raise Http404
 
@@ -35,11 +38,13 @@ def show(request, cat_slug):
     attrs = ProductTypeAttribute.objs.filter(prod_type__prod__prod_base__category__slug=cat_slug).\
         values(
             slug=F('prod_attribute__slug'), 
-            tr=F('prod_attribute__trs')
+            tr=F('prod_attribute__name')
         ).distinct()
 
     attr_values = Product.objs.fnd().valid().shown().filter(is_default=True).\
-        filter(prod_base__category__in=Category.objs.get(slug=cat_slug).get_descendants(include_self=True)).\
+        filter(
+            prod_base__category__in=Category.objs.get(slug=cat_slug).get_descendants(include_self=True)
+        ).\
         values(
             attr_slug=F('attribute_values__product_attribute__slug'),
             val=F('attribute_values__value'),
@@ -54,18 +59,11 @@ def show(request, cat_slug):
                 ('prod_base__translation__name__contains', 'or',)
             ], search_argument
         ).\
-        filter(prod_base__category__in=Category.objs.get(slug=cat_slug).get_descendants(include_self=True)).\
-        order_by('-created_at').\
+        filter(
+            prod_base__category__in=Category.objs.get(slug=cat_slug).get_descendants(include_self=True)
+        ).\
         select_related('prod_base').\
-        prefetch_related(
-            Prefetch('prod_base__translation', 
-                queryset=ProductBaseTranslation.objs.filter(lang_id=current_language).\
-                    defer(*ProductBaseTranslation.defer_values), 
-                to_attr='tr'
-            )
-        ).distinct()
-
-    page_obj = with_pagination(request, products)
+        distinct()
 
     return render(request, 'apps/fnd/category.html', {
         'page_obj': with_pagination(request, products),
