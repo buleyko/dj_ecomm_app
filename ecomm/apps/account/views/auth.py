@@ -89,7 +89,10 @@ def registration(request):
         logger.info(f'REGISTRATION USER: {user.id}')
 
         # send registration email
-        send_email_celery_task.delay(user.email, get_activate_account_mail_body(request, user))
+        try:
+            send_email_celery_task.delay(user.email, get_activate_account_mail_body(request, user))
+        except:
+            pass
 
         messages.success(request, _('Accaunt created. For activation check mail'))
         return redirect('fnd:home')

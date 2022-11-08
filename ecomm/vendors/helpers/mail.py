@@ -13,11 +13,11 @@ from pathlib import Path
 def get_mail_template(file):
 	template_file = Path(settings.BASE_DIR + file)
 	if template_file.is_file():
-    	return file
-    else:
-    	path_list = file.split('/')
-    	file_name = path_list.pop().split('_')
-    	return '/'.join(path_list) + '/' + settings.LANGUAGE_CODE + '_' + file_name[1]
+		return file
+	else:
+		path_list = file.split('/')
+		file_name = path_list.pop().split('_')
+		return '/'.join(path_list) + '/' + settings.LANGUAGE_CODE + '_' + file_name[1]
 
 
 def get_uid_and_token(user):
@@ -38,28 +38,6 @@ def get_mail_body(request, user, template, subject='', uid_and_token=False, **kw
 		data = {**data, **get_uid_and_token(user)}
 
 	return render_to_string(template, data)
-
-
-# def get_activate_account_mail_body(request, user):
-# 	mail_body = get_mail_body(
-# 		request, 
-# 		user, 
-# 		'src/mail/registration/en_registration.html', 
-# 		subject=_('Activate your Account'), 
-# 		uid_and_token=True,
-# 	)
-# 	return mail_body
-
-
-# def get_reset_passwd_mail_body(request, user):
-# 	mail_body = get_mail_body(
-# 		request, 
-# 		user, 
-# 		'src/mail/reset_passwd/en_reset_passwd.html', 
-# 		subject=_('Reset password'), 
-# 		uid_and_token=True,
-# 	)
-# 	return mail_body
 
 
 def get_activate_account_mail_body(request, user):

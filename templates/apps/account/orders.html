@@ -4,7 +4,27 @@
 
 
 {% block content %}
-    <div>
+    <div class="flex col">
         <h1 class="text-color text-center">{% translate "Orders" %}</h1>
+        <div class="flex col">
+            <div class="flex mb-4 p-4">
+                <div class="flex-1">{% translate "Order.NO" %}</div>
+                <div class="flex-1">{% translate "Address" %}</div>
+                <div class="flex-1">{% translate "Total" %}</div>
+                <div class="flex-1">{% translate "Quantity" %}</div>
+                <div class="flex-1">{% translate "Date" %}</div>
+            </div>
+            {% for order in page_obj %}
+                <div class="flex align-center border border-color radius-2 mt-4 p-4">
+                    <div class="flex-1">{{ order.order_key }}</div>
+                    <div class="flex-1">{{ order.address }}</div>
+                    <div class="flex-1">{{ order.total_paid }}</div>
+                    <div class="flex-1">{{ order.total_amount }}</div>
+                    <div class="flex-1">{{ order.created_at }}</div>
+                </div>
+            {% endfor %}
+            </div>
+            {% include 'partials/pagination.html' %}
+        </div>
     </div>
 {% endblock content %} 

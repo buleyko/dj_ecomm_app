@@ -102,31 +102,31 @@ class ProductType(BaseModel, NameByLangMixin):
 
 
 class ProductTypeAttribute(BaseModel):
-    prod_attribute = models.ForeignKey(
-        ProductAttribute,
-        related_name='attribute',
-        on_delete=models.PROTECT,
-    )
-    prod_type = models.ForeignKey(
-        ProductType,
-        related_name='type',
-        on_delete=models.PROTECT,
-    )
+	prod_attribute = models.ForeignKey(
+		ProductAttribute,
+		related_name='attribute',
+		on_delete=models.PROTECT,
+	)
+	prod_type = models.ForeignKey(
+		ProductType,
+		related_name='type',
+		on_delete=models.PROTECT,
+	)
 
 class ProductAttributeValues(BaseModel):
-    attribute_values = models.ForeignKey(
-        ProductAttributeValue,
-        related_name='values',
-        on_delete=models.PROTECT,
-    )
-    product = models.ForeignKey(
-        'Product',
-        related_name='attr_values',
-        on_delete=models.PROTECT,
-    )
+	attribute_values = models.ForeignKey(
+		ProductAttributeValue,
+		related_name='values',
+		on_delete=models.PROTECT,
+	)
+	product = models.ForeignKey(
+		'Product',
+		related_name='attr_values',
+		on_delete=models.PROTECT,
+	)
 
-    class Meta:
-        unique_together = (('attribute_values', 'product'),)
+	class Meta:
+		unique_together = (('attribute_values', 'product'),)
 
 
 
@@ -202,7 +202,7 @@ class ProductBaseTranslation(MetaDataMixin):
 
 
 def prod_thumb_upload_to(instance, filename):
-    return f'fnd/{instance.fnd_id}/prod/{instance.slug}/thumb/{filename}'
+	return f'fnd/{instance.fnd_id}/prod/{instance.slug}/thumb/{filename}'
 
 
 class Product(BaseModel, TimestampsMixin, SoftdeleteMixin):

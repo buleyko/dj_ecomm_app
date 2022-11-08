@@ -64,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # custom
+    # 'ecomm.apps.fnd.middlewares.foundation.foundation_middleware',
     'ecomm.apps.fnd.middlewares.language.language_middleware',
 ]
 

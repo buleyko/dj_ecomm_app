@@ -10,13 +10,20 @@ from django.shortcuts import (
 from django.utils.translation import get_language
 from ecomm.apps.fnd.models import (
     Fnd,
+    Product,
 )
 
 
 @require_http_methods(['GET'])
 def home(request):
     current_language = get_language()
-    return render(request, 'apps/fnd/home.html', {})
+    products = Product.objs.fnd().valid().shown().\
+        filter(is_default=True).\
+        select_related('prod_base')
+        
+    return render(request, 'apps/fnd/home.html', {
+        'page_obj': with_pagination(request, products),
+    })
 
 
 

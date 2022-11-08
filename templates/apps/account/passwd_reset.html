@@ -4,7 +4,26 @@
 
 
 {% block content %}
-    <div>
-        <h1 class="text-color text-center">{% translate "Reset password" %}</h1>
+    <div class="flex justify-center align-center h-vh">
+        <div>
+            <h1 class="text-color text-center">{% translate "Reset password" %}</h1>
+            <form class="border border-color radius-2 mt-8 p-6" action="{% url 'account:reset_passwd' %}" method="POST">
+                {% csrf_token %}
+                {% if form.errors %}
+                  {% for field in form %}
+                    {% if field.errors %}
+                    <div>
+                        {{ field.label }}: {{ field.errors|striptags }}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+
+                {{ form.as_p }}
+                <div class="text-center mt-4">
+                    <button class="border border-color radius-2 px-6 py-4" type="submit">{% translate "Send" %}</button>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock content %} 

@@ -1,5 +1,39 @@
+{% load static %}
+{% load i18n %}
 
-
-<footer class="footer" id="footer">
-	
+<footer class="bg-footer-color text-color">
+	<div class="flex col">
+		<div class="flex justify-end">
+			<!-- footer upper block -->
+			<small class="on-click" onclick="settings.theme='dark'">(dark)</small>
+			<small class="on-click" onclick="settings.theme='light'">(light)</small>---
+			<small class="on-click" onclick="settings.content_layout='list_container-col'">(line)</small>
+			<small class="on-click" onclick="settings.content_layout='list_container-row'">(row)</small>
+		</div>
+		<nav class="flex justify-around">
+			<div class="p-4">
+				<a href="{% url 'fnd:home' %}" class="flex col align-center text-decoration-none text-color logo">
+					<img class="px-2" src="{% static 'images/logo.png' %}" alt="logo">
+					<span>Name</span>
+				</a>
+			</div>
+			<li class="list-style-none p-4">
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+			</li>
+			<li class="list-style-none p-4">
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+			</li>
+			<li class="list-style-none p-4">
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+			</li>
+			<li class="list-style-none p-4">
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+				<div class="p-2"><a class="text-decoration-none text-color" href="">---?---</a></div>
+			</li>
+		</nav>
+		<div><!-- footer bottom block --></div>
+	</div>
 </footer>

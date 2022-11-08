@@ -7,7 +7,87 @@
 
 
 {% block content %}
-    <div>
+    <div class="flex justify-center">
+        {% get_current_language as LANG_CODE %}
+        <div class="flex col w-80 p-10">
+            <h2 class="text-center my-10">{% translate "Checkout" %}</h2>
+            <div class="flex justify-center p-4">
+                <div class="flex col p-4 checkout">
+                    <div class="flex justify-between my-6">
+                        <input class="px-2" type="text" name="order_name" placeholder="{% translate 'Name' %}">
+                        <input class="px-2" type="email" name="order_email" placeholder="{% translate 'E-mail' %}">
+                    </div>
+                    <div class="my-4">{% translate "Shipping information" %}</div>
+                    <div class="flex justify-center my-4">
+                        <input class="w-full px-2" type="text" name="order_address" placeholder="{% translate 'Address' %}">
+                    </div>
+                    <div class="flex justify-between my-4">
+                        <input class="px-2" type="text" name="order_post" placeholder="{% translate 'Postal code' %}"
+                            onkeypress="return onlyOneToNine(event);"
+                        >
+                        <input class="px-2" type="text" name="order_country" placeholder="{% translate 'Country code' %}"
+                            onkeypress="return onlyOneToNine(event);"
+                        >
+                    </div>
+                    
+                    <div class="flex justify-center my-4">
+                        <button id="paypalBtns" 
+                            class="border border-color radius-2 pointer text-center w-full my-2 py-2" 
+                            onclick="showPayPalBtns()" disabled>
+                            {% translate "Continue" %}
+                        </button>
+                    </div>
+                    <div>
+                        <div id="paypal-button-container"></div>
+                    </div>
+                </div>
+                <div class="col p-4">
+                    <div class="my-6">
+                        <a class="text-decoration-none text-color" href="{% url 'fnd:cart' %}">
+                            <button class="border border-color radius-2 pointer py-2 px-4">{% translate "Back" %}</button>
+                        </a>
+                    </div>
+                    <div class="my-6">{% translate "Order summary" %}</div>
+                    <div class="flex col py-3">
+                        
+                        {% for item in cart %}
+                        {% with prod=item.product %}
+                            <div class="flex justify-between align-center my-4 checkout-item">
+                                <img src="{{ prod.thumb|or_default_img }}">
+                                <div class=" py-2 px-4">
+                                    {{ prod.prod_base.get_name_by }} 
+                                    <small>
+                                        {% if prod.ext_name %}
+                                            ({{ prod.name_ext }})
+                                        {% endif %}
+                                    </small>
+                                </div>
+                                <div class=" py-2 px-4">{{ item.total_price }}$</div>
+                                <div class=" py-2 px-4">{{ item.quantity }}</div>
+                            </div>
+                        {% endwith %}
+                        {% endfor %}
+
+                    </div>
+                    <div>
+                        {% translate "Items" %}: 
+                        {% with total_qty=cart|length %}
+                            {% if total_qty > 0 %}
+                                {{ total_qty }}
+                            {% endif %}
+                        {% endwith %} 
+                    </div>
+                    <div>
+                        {% translate "Delivery" %}: 
+                        <span id="cart-delivery">{{ cart.get_delivery_price }}</span>
+                    </div>
+                    <div>{% translate "Total" %}: 
+                        <span id="cart-total">{{ cart.get_total_price }}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         
     </div>
 {% endblock content %} 

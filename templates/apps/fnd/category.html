@@ -7,8 +7,66 @@
 
 
 {% block content %}
-    <div>
+    <div class="flex col text-color">
         {% get_current_language as LANG_CODE %}
+        <div class="my-10">
+            <h1 class="text-color text-center">
+                {{ category.get_name_by }}
+            </h1>
+        </div>
+        
+        <div class="flex">
+            <div class="flex col mr-4 mt-6 p-8">
+                <div id="apply-filter" class="text-center {% if not filter_arguments %}hidden{% endif %}">
+                    <span class="pointer" onclick="filter.apply()">apply</span>
+                    <span class="pointer" onclick="filter.apply(clear=true)">(clear)</span>
+                </div>
+                <ul id="filters">
+                    {% for attr in attrs %}
+                    <li class="list-style-none">
+                        <span>
+                            {% if attr.tr %}
+                                {{ attr.tr|by_lang:LANG_CODE }}
+                            {% else %}
+                                {{ attr.slug }}
+                            {% endif %}
+                        </span>
+                        <ul>
+                        {% for val in attr_values %}
+                            {% if attr.slug == val.attr_slug %}
+                            <li class="list-style-none">
+                                <input type="checkbox" 
+                                    data-attr="{{ val.attr_slug }}"
+                                    data-val="{{ val.val }}"
+                                    {% if val.val in filter_arguments %}checked{% endif %}
+                                />
+                                <span>
+                                    {% if val.tr %}
+                                        {{ val.tr|by_lang:LANG_CODE }}
+                                    {% else %}
+                                        {{ val.val }}
+                                    {% endif %}
+                                </span>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="flex col">
+                <div class="{{ options.content_layout|default:'list_container-row' }} mt-6 p-8">
+                    {% for prod in page_obj %}
+                        {% include 'apps/fnd/partials/product.html' with prod=prod %}
+                    {% endfor %}
+                </div>
+                <div>
+                    {% include 'partials/pagination.html' %}
+                </div>
+            </div>
+            
+        </div>
     </div>
 {% endblock content %} 
 

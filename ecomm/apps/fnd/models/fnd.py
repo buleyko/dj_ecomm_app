@@ -48,7 +48,6 @@ class Fnd(BaseModel, TimestampsMixin, SoftdeleteMixin, NameByLangMixin):
 		primary_key=True
 	)
 	name = models.JSONField(
-		max_length=80, 
 		null=True, 
 		blank=True,
 	)

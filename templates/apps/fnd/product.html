@@ -1,11 +1,116 @@
 {% extends fnd.main_layout|default:'layouts/upper.html' %}
 {% load static %} 
 {% load i18n %}
+{% load cart_product_qty %}
 {% load by_lang %}
 
 
 {% block content %}
-    <div>
-
+    <div class="flex col text-color product-item">
+        <div class="flex justify-center my-10">
+            <h2>
+                {{ prod.prod_base.get_name_by }} 
+                <small>
+                    {% if prod.ext_name %}
+                        ({{ prod.name_ext }})
+                    {% endif %}
+                </small>
+            </h2>
+        </div>
+        <div class="flex wrap justify-center my-10">
+            {% for prod_img in product.media.all  %}
+                <img width="200" height="200" class="m-4" src="{{ prod_img.imgUrl }}">
+            {% endfor %}
+        </div>
+        <div class="flex justify-center my-10">
+            <div class="flex justify-between align-center w-60">
+                <div class="mr-10">
+                    <span>{% translate "Price" %}:</span>
+                    <span>
+                        {% if product.sale_price %}
+                            <small>(<s>{{ product.price }}</s>)</small>{{ product.sale_price }}
+                        {% else %}
+                            {{ product.price }}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex justify-center align-center">
+                    <div class="act relative mr-6">
+                        <div class="absolute full" onclick="wish.toggle()" data-prodid="{{ product.id }}">
+                            <svg width="28px" height="28px" class="prod-wish {% if product.id in wishlist %}wished{% endif %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
+                                stroke="currentColor"
+                                stroke-width="1"
+                                stroke-linecap="round" stroke-linejoin="round" fill="transparent">
+                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="act relative ml-6">
+                        <div class="absolute full w-80" onclick="compare.toggle()" data-prodid="{{ product.id }}">
+                            <svg width="24px" height="24px" class="prod-compare {% if product.id in comparelist %}compared{% endif %}"  xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 16 16" 
+                                stroke="currentColor"
+                                stroke-width="1"
+                                stroke-linecap="round" stroke-linejoin="round" fill="transparent">
+                                <path fill-rule="nonzero" d="M1 1 L1 15 L15 15 L15 1 L1 1"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    {% cart_product_qty cart product.id as prod_quantity %}
+                    <button onclick="cart.select()" 
+                        data-prodid="{{ product.id }}" 
+                        data-quantity="{{ prod_quantity|default_if_none:'' }}"  
+                        class="relative border border-color text-color radius-2 pointer px-8 mr-2
+                        {% if product.id in cart.get_product_ids %}prod-selected{% endif %}
+                    ">
+                        <div class="absolute prod-count 
+                            {% if not prod_quantity %}hidden{% endif %}
+                            ">
+                            <small>{{ prod_quantity|default_if_none:'' }}</small>
+                        </div>
+                        <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+       </div>
+       <div class="flex justify-center align-center">
+            {% get_current_language as LANG_CODE %}
+            {% for attr in attrs %}
+            <div class="flex">
+                <div class="text-bold">
+                    {% if attr.tr %}
+                        {{ attr.tr|by_lang:LANG_CODE }}
+                    {% else %}
+                        {{ attr.slug }}
+                    {% endif %}
+                </div>
+                {% for val in attr_values %}
+                    {% if attr.slug == val.attr_slug %}
+                    <div>
+                        <span>
+                            {% if val.tr %}
+                                {{ val.tr|by_lang:LANG_CODE }}
+                            {% else %}
+                                {{ val.val }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="flex justify-center">
+            <p class="text-color text-center w-60 mt-6 p-10">
+                {% with product.prod_base.tr|first as tr %}
+                    {{ tr.description|default:'' }}  
+                {% endwith %}
+            </p>
+        </div>
     </div>
 {% endblock content %} 

@@ -7,7 +7,113 @@
 
 
 {% block content %}
-    <div>
-        cart page
+    <div class="flex justify-center">
+        {% get_current_language as LANG_CODE %}
+        <div class="flex col w-80 p-10">
+            <h2 class="text-center my-10">{% translate "Cart" %}</h2>
+
+            <div class="flex my-4 py-4">
+                <a class="text-decoration-none text-color" href="{% url 'fnd:home' %}">
+                    <span class="border border-color radius-2 pointer py-4 px-8">{% translate "Continue" %}</span>
+                </a>
+            </div>
+            <div class="flex justify-between align-center border border-color radius-2 mb-10">
+                <div class="ml-4">
+                    <span class="mr-4">{% translate "Items" %}:
+                        <span id="cart-quantity">
+                            {% with total_qty=cart|length %}
+                                {% if total_qty > 0 %}
+                                    {{ total_qty }}
+                                {% endif %}
+                            {% endwith %} 
+                        </span>
+                    </span>
+                    <span class="mr-4">{% translate "Total" %}:
+                        <span id="cart-total">{{ cart.get_total_price }}</span>
+                    </span>
+                    <span class="mr-6">{% translate "Delivery" %}:
+                        <span id="cart-delivery">{{ cart.get_delivery_price }}</span>
+                    </span>
+                </div>
+                <div class="flex align-center p-4">
+                    <select class="mr-8 p-6" id="deliverySelect" onchange="cart.addDelivery()">
+                        <option value="empty" {% if cart.get_delivery_id == 0 %}selected{% endif %}>---</option>
+                        {% for delivery in deliveries %}
+                            <option value="{{ delivery.id }}" 
+                                {% if cart.get_delivery_id == delivery.id %}selected{% endif %}
+                            >
+                            {{ delivery.get_name_by }}  
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex align-center p-4">
+                    <a class="text-decoration-none text-color" href="{% url 'fnd:checkout' %}">
+                        <button class="border border-color radius-2 pointer py-4 px-8">{% translate "Checkout" %}</button>
+                    </a>
+                </div>
+            </div>
+            <div class="flex mt-8 mb-4 text-center">
+                <div class="flex-1"></div>
+                <div class="flex-2">{% translate "Item" %}</div>
+                <div class="flex-1">{% translate "Price" %}</div>
+                <div class="flex-1">{% translate "Quantity" %}</div>
+                <div class="flex-1">{% translate "Total" %}</div>
+                <div class="flex-1"></div>
+            </div>
+            <hr>
+
+            <div class="flex col my-4">
+
+                {% for item in cart %}
+                {% with prod=item.product %}
+                <div id="cart-prod-{{ prod.id }}" class="flex align-center border border-color radius-2 p-2 mt-4 cart-item text-center">
+                    <div class="flex-2 text-left">
+                        <img src="{{ prod.thumb|or_default_img }}">
+                    </div>
+                    <div class="flex-1 text-left">
+                        {{ prod.prod_base.get_name_by }} 
+                        <small>
+                            {% if prod.ext_name %}
+                                ({{ prod.name_ext }})
+                            {% endif %}
+                        </small>
+                    </div>
+                    <div class="flex-1">{{ prod.price }}$</div>
+                    <div class="flex-1">
+                        <div class="flex justify-center align-center">
+                            {% cart_product_qty cart prod.id as prod_quantity %}
+                            <span onclick="cart.decrement()" data-prodid="{{ prod.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                                </svg>
+                            </span>
+                            <span id="prod-quantity-{{ prod.id }}" 
+                                data-prodid="{{ prod.id }}" 
+                                data-quantity="{{ prod_quantity|default_if_none:'' }}">
+                                {% cart_product_qty cart prod.id %}
+                            </span>
+                            <span onclick="cart.increment()" data-prodid="{{ prod.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                                </svg>
+                            </span>
+                            <button id="update-prod-quantity-btn-{{ prod.id }}" class="border border-clr radius-1 pointer py-1 px-2 hidden">{% translate "Update" %}</button>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <span id="prod-total-{{ prod.id }}">{{ item.total_price }}</span>$
+                    </div>
+                    <div class="flex-1">
+                        <button class="border border-color radius-2 pointer py-2 px-4" 
+                            onclick="cart.remove()" data-prodid="{{ prod.id }}">
+                            {% translate "Delete" %}
+                        </button>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock content %} 

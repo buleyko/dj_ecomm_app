@@ -21,18 +21,16 @@ def context_processor(request):
 
 	fnd = Fnd.objs.valid().filter(alias=settings.FND_ALIAS).first()
 	if fnd is None:
-		print(colored('\nfoundation not exist', 'red'))
-		print(colored('set settings.FND_ALIAS=<alias>\nand run command: create_foundation <alias>\n', 'green'))
 		raise Http404
 
 	categories = Category.objs.fnd().valid()
-
+	
 	options = fnd.set_options(request.session)
 	
 	return {
 		'fnd': fnd,
-		'categories': categories,
 		'options': options,
+		'categories': categories,
 		'cart': cart,
 		'wish': wish,
 		'comparison': comparison,

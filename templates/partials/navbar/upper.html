@@ -1,4 +1,213 @@
+{% load static %}
+{% load i18n %}
+{% load mptt_tags %}
 
-<header class="header" id="header">
-	
+<header class="flex col bg-nav-color text-color p-2 h-navbar header" id="header">
+	<div><!-- anything above the menu --></div>
+	<nav class="flex justify-between align-center">
+		<a href="{% url 'fnd:home' %}" class="flex align-center text-decoration-none text-color logo">
+			<img class="px-2" src="{{ fnd.logoUrl }}" alt="logo">
+			<span>
+				{{ fnd.get_name_by }}  
+			</span>
+		</a>
+		<menu class="flex justify-center">
+			<div id="menu-large-cont" class="flex justify-center align-center">
+				<li class="list-style-none px-2">
+					<span onclick="cssClass.toggle('#categories-list', 'hidden')">
+						{% translate "Categories" %}
+					</span>
+				</li>
+				<li class="list-style-none px-2">
+					<input id="search-name" class="border border-color radius-2 p-4" type="text" name="search"
+						value="{% if search_argument %}{{search_argument}}{% endif %}">
+					<span>
+						<button class="border border-color radius-2 pointer p-2" onclick="search.apply()">
+							{% translate "Search" %}
+						</button>
+					</span>
+				</li>
+			</div>
+			<div id="menu-small-cont" class="hidden relative">
+				<button onclick="cssClass.toggle('#small-menu', 'hidden')">
+					<svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+					  <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+					</svg>
+				</button>
+				<div id="small-menu" class="absolute t-50 z-1 p-3 hidden">
+					<div class="flex col bg-nav-color text-color">
+						<div class="px-2">
+							<input class="border border-color radius-2 p-4" type="text" name="search">
+						</div>
+					    {% recursetree categories %}
+					        <div class="p-2">
+					            {{ node.get_name_by }}
+					            {% if not node.is_leaf_node %}
+					                <span class="pointer">
+					            		<a class="text-decoration-none text-color" href="{% url 'fnd:category' node.slug %}">
+					            			{{ children }}
+					            		</a>
+					            	</span>
+					            {% endif %}
+					        </div>
+					    {% endrecursetree %}
+					</div>
+				</div>
+			</div>
+		</menu>
+		<menu class="flex">
+			<li class="list-style-none icon">
+				<div class="flex justify-center align-center h-full">
+					<div onclick="cssClass.toggle('#langs-list', 'hidden')">
+						{% get_current_language as LANG_CODE %}
+						<span class="pointer">{{ LANG_CODE }}</span>
+					</div>
+				</div>
+				<div class="relative">
+					<div id="langs-list" class="absolute z-2 text-color bg-nav-color hidden">
+						<div class="flex col p-4">
+							{% for l in fnd.langs %}
+			        			<button class="text-color mt-2 p-2 pointer" 
+			        				onclick='location.href="{% url "fnd:change_language" l.lang %}"' 
+			        				type="button"
+			        				{% if l.lang == LANG_CODE %}disabled{% endif %}
+			        			>
+			        				{{ l.lang }}
+			        			</button>
+							{% endfor %}
+			        	</div>
+					</div>
+				</div>
+			</li>
+			{% if user.is_authenticated %}
+				<li class="list-style-none icon">
+					<a class="text-decoration-none text-color" href="{% url 'account:signout' %}">
+						<div>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+							<path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+							<path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+						</svg>
+						</div>
+					</a>
+				</li>
+				<li class="list-style-none icon">
+					<div>
+					<a class="text-decoration-none text-color" href="{% url 'account:dashboard' %}">
+						<div>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+							<path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+						</svg>
+						<small id="user-name">{{ request.user }}</small>
+						<div>
+					</a>
+					</div>
+				</li>
+			{% else %}
+				<li class="list-style-none icon">
+					<a class="text-decoration-none text-color" href="{% url 'account:signin' %}">
+						<div>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+							<path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+							<path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+						</svg>
+						</div>
+					</a>
+				</li>
+			{% endif %}
+			<li class="relative list-style-none ml-4 icon">
+				<div id="wish-total" class="absolute full">
+					<a class="text-decoration-none text-color" href="{% url 'fnd:wish' %}">
+						<div>
+                        <svg class="{% if wish|length > 0 %}wished{% endif %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" 
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round" stroke-linejoin="round" fill="transparent">
+                            <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    	</div>
+					</a>
+				</div>
+				<div id="wish-counter" class="absolute text-center radius-full counter 
+					{% if wish|length == 0 %}hidden{% endif %}">
+					<span>
+						{% with wish_qty=wish|length %}
+	                        {% if wish_qty > 0 %}
+	                            {{ wish_qty }}
+	                        {% endif %}
+	                    {% endwith %} 
+					</span>
+				</div>
+			</li>
+			<li class="relative list-style-none mr-4 icon">
+				<div id="compare-total" class="absolute full">
+					<a class="text-decoration-none text-color" href="{% url 'fnd:comparison' %}">
+						<div>
+						<svg class="prod-compare {% if comparison|length > 0 %}compared{% endif %}"  xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 16 16" 
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round" stroke-linejoin="round" fill="transparent">
+                            <path fill-rule="nonzero" d="M1 1 L1 15 L15 15 L15 1 L1 1"/>
+                        </svg>
+                    	</div>
+					</a>
+				</div>
+				<div id="compare-counter" class="absolute text-center radius-full counter 
+					{% if comparison|length == 0 %}hidden{% endif %}">
+					<span>
+						{% with comparison_qty=comparison|length %}
+	                        {% if comparison_qty > 0 %}
+	                            {{ comparison_qty }}
+	                        {% endif %}
+	                    {% endwith %} 
+					</span>
+				</div>
+			</li>
+			<li class="relative list-style-none ml-4 icon">
+				<a class="text-decoration-none text-color" href="{% url 'fnd:cart' %}">
+					<div id="box-fix" class="absolute">
+						<svg 
+							xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="transparent" 
+								class="{% with total_qty=cart|length %}{% if total_qty > 0 %}selected{% endif %}{% endwith %}"
+							>
+							<path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6l.5.667Z"/>
+						</svg>
+					</div>
+					<div id="cart" class="absolute full">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+							<path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+						</svg>
+					</div>
+				</a>
+				<div id="cart-counter" class="absolute text-center radius-full counter 
+					{% with total_qty=cart|length %}{% if total_qty == 0 %}hidden{% endif %}{% endwith %}
+				">
+					<span>
+						{% with total_qty=cart|length %}
+	                        {% if total_qty > 0 %}
+	                            {{ total_qty }}
+	                        {% endif %}
+	                    {% endwith %} 
+					</span>
+				</div>
+			</li>
+		</munu>
+	</nav>
+	<div><!-- anything under the menu --></div>
+	<div class="relative">
+		<div id="categories-list" class="absolute z-1 text-color bg-nav-color p-8 hidden">
+		    {% recursetree categories %}
+		        <ul class="p-2">
+		            {{ node.get_name_by }}
+		            {% if not node.is_leaf_node %}
+		                <li class="list-style-none p-4 pointer">
+		            		<a class="text-decoration-none text-color" href="{% url 'fnd:category' node.slug %}">
+		            			{{ children }}
+		            		</a>
+		            	</li>
+		            {% endif %}
+		        </ul>
+		    {% endrecursetree %}
+		</div>
+	</div>
 </header>

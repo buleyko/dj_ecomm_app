@@ -4,7 +4,40 @@
 
 
 {% block content %}
-    <div>
-    
+    <div class="flex justify-center align-center h-vh">
+        <div class="border border-color radius-4 p-4 auth-form">
+            {{ form.non_field_errors }}
+            <form action="{% url 'account:registration' %}" method="POST">
+                {% csrf_token %}
+                <div class="flex col justify-center text-center mt-4 form-input">
+                    <span>{{ form.username.errors }}</span>
+                    <label class="text-color mb-2" for="{{ form.username.id_for_label }}">{% translate "User name" %}</label>
+                    {{ form.username }}
+                </div>
+                <div class="flex col justify-center text-center mt-4 form-input">
+                    <span>{{ form.email.errors }}</span>
+                    <label class="text-color mb-2" for="{{ form.email.id_for_label }}">{% translate "Email" %}</label>
+                    {{ form.email }}
+                </div>
+                <div class="flex col justify-center text-center mt-4 form-input">
+                    <span>{{ form.password.errors }}</span>
+                    <label class="text-color mb-2" for="{{ form.password.id_for_label }}">{% translate "Password" %}</label>
+                    {{ form.password }}
+                </div>
+                <div class="flex col justify-center text-center mt-4 form-input">
+                    <span>{{ form.password2.errors }}</span>
+                    <label class="text-color mb-2" for="{{ form.password2.id_for_label }}">{% translate "Repeat password" %}</label>
+                    {{ form.password2 }}
+                </div>
+                <div class="text-center mt-4">
+                    <button class="border border-color radius-2 px-10 py-2" type="submit">{% translate "Sign Up" %}</button>
+                </div>
+            </form>
+            <div class="text-right mt-8">
+                <a class="mt-4" href="{% url 'account:signin' %}">
+                    {% translate "Sign In" %}
+                </a>
+            </div>
+        </div>
     </div>
 {% endblock content %} 

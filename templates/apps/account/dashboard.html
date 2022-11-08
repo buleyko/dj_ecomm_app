@@ -4,7 +4,12 @@
 
 
 {% block content %}
-    <div>
+    <div class="flex col">
         <h1 class="text-color text-center">{% translate "Dashboard" %}</h1>
+        <div class="flex justify-center">
+            <div class="border border-color radius-2 m-4 p-10">
+                <a class="text-decoration-none text-color" href="{% url 'account:orders' %}">{% translate "Orders" %}</a>
+            </div>
+        </div>
     </div>
 {% endblock content %} 

@@ -4,10 +4,10 @@
 
 
 {% block content %}
-    <div>
-        <div class="{{ options.content_layout|default:'list_container-row' }} mt-6 p-8">
-            home page
-        </div>
-        {% include 'partials/pagination.html' %}
+    <div class="{{ options.content_layout|default:'list_container-row' }} mt-6 p-8">
+        {% for prod in page_obj %}
+            {% include 'apps/fnd/partials/product.html' with prod=prod %}
+        {% endfor %}
     </div>
+    {% include 'partials/pagination.html' %}
 {% endblock content %} 

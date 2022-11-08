@@ -4,7 +4,36 @@
 
 
 {% block content %}
-    <div>
-
+    <div class="flex justify-center align-center h-vh">
+        <div class="border border-color radius-4 p-4 auth-form">
+            {{ form.non_field_errors }}
+            <form action="{% url 'account:entry' %}" method="POST">
+                {% csrf_token %}
+                <div class="flex col justify-center text-center mt-4 form-input">
+                    <span>{{ form.email.errors }}</span>
+                    <label class="text-color mb-2" for="{{ form.email.id_for_label }}">{% translate "Email" %}</label>
+                    {{ form.email }}
+                </div>
+                <div class="flex col justify-center text-center mt-4 form-input">
+                    <span>{{ form.password.errors }}</span>
+                    <label class="text-color mb-2" for="{{ form.password.id_for_label }}">{% translate "Password" %}</label>
+                    {{ form.password }}
+                </div>
+                <div class="text-center mt-4">
+                    {{ form.next_url }}
+                    <button class="border border-color radius-2 px-10 py-2" type="submit">{% translate "Sign In" %}</button>
+                </div>
+            </form>
+            <div class="text-right mt-8">
+                <a class="text-decoration-none text-color pointer mt-4" href="{% url 'account:signup' %}">
+                    {% translate "Sign Up" %}
+                </a>
+            </div>
+            <div class="text-right mt-8">
+                <a class="text-decoration-none text-color pointer mt-4" href="{% url 'account:reset_passwd_create' %}">
+                    <small>{% translate "Forgotten Password?" %}</small>
+                </a>
+            </div>
+        </div>
     </div>
 {% endblock content %} 

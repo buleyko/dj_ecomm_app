@@ -25,6 +25,48 @@ class BaseQuerySet(models.QuerySet):
 	def fnd(self, alias=settings.FND_ALIAS):
 		return self.filter(fnd_id=alias)
 
+	def filter_in_if_args_exists(self, key, arguments=[]):
+		if arguments:
+			filter_dict = {key: arguments}
+			return self.filter(**filter_dict)
+		else:
+			return self
+
+	def filter_contains_if_arg_exist(self, keys, argument=''):
+		if argument:
+			if isinstance(keys, list):
+				_q = Q()
+				for key in keys:
+					if isinstance(key, tuple):
+						conn = Q.AND if key[1]!='or' else Q.OR
+						_q.add(Q(**{key[0]: argument}), conn)
+					else:
+						_q.add(Q(**{key: argument}), Q.AND)
+			else:
+				_q = Q(**{keys: argument})
+			return self.filter(_q)
+		else:
+			return self
+
+	def translation_by(self, lang=settings.LANGUAGE_CODE):
+		return self.filter(translation__lang = lang)
+	
+	def prefetch_translation_by(self, model_translation, lang=settings.LANGUAGE_CODE, defers=[]):
+		return self.prefetch_related(
+			Prefetch('translation', 
+				queryset=model_translation.objs.filter(lang_id=lang).defer(*defers), 
+				to_attr='tr'
+			)
+		)
+
+	def prefetch_translation(self, model_translation, defers=[]):
+		return self.prefetch_related(
+			Prefetch('translation', 
+				queryset=model_translation.objs.all().defer(*defers), 
+				to_attr='tr'
+			)
+		)
+
 	def by_raw(self, query_str, params):
 		return self.raw(query_str, params)
 
@@ -48,6 +90,21 @@ class BaseManager(models.Manager):
 
 	def fnd(self, alias=settings.FND_ALIAS):
 		return self.get_queryset().fnd(alias)
+
+	def filter_in_if_args_exists(self, key, arguments=[]):
+		return self.get_queryset().filter_in_if_args_exists(key, arguments)
+
+	def filter_contains_if_arg_exist(self, keys, argument=''):
+		return self.get_queryset().filter_contains_if_arg_exist(keys, argument)
+
+	def translation_by(self, lang=settings.LANGUAGE_CODE):
+		return self.get_queryset().translation_by(lang)
+
+	def prefetch_translation_by(self, model_translation, lang=settings.LANGUAGE_CODE, defers=[]):
+		return self.get_queryset().prefetch_translation_by(model_translation, lang=lang, defers=defers)
+
+	def prefetch_translation(self, model_translation, defers=[]):
+		return self.get_queryset().prefetch_translation(self, model_translation, defers=defers)
 
 	def by_raw(self, query_str, params):
 		return self.get_queryset().by_raw(query_str, params)

@@ -4,7 +4,26 @@
 {% load by_lang %}
 
 {% block content %}
-    <div>
+    <div class="flex col text-color">
         {% get_current_language as LANG_CODE %}
+        <div class="my-10">
+            <h1 class="text-color text-center">
+                {% translate "Comparison list" %}
+            </h1>
+        </div>
+        <div class="{{ options.content_layout|default:'list_container-row' }} mt-6 p-8">
+            {% for item in comparison %}
+            {% with prod=item %}
+                <div class="border border-color radius-2 m-6 p-6">
+                    {{ prod.prod_base.get_name_by }} 
+                    <small>
+                        {% if prod.ext_name %}
+                            ({{ prod.name_ext }})
+                        {% endif %}
+                    </small>
+                </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock content %} 

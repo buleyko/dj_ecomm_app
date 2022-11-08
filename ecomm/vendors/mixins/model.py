@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import get_language
 from django.utils.timezone import now
 
 
@@ -51,11 +52,12 @@ class MetaDataMixin(models.Model):
 
 
 class NameByLangMixin:
-	def get_name_by(self, lang):
-		name = self.name.get(lang, False)
-		if not name:
-			name = self.name.get('title', None)
-		return name
+	def get_name_by(self, lang=get_language()):
+		if self.name:
+			name = self.name.get(lang, False)
+			if not name:
+				name = self.name.get('title', None)
+			return name
 
 
 

@@ -20,7 +20,6 @@ from ecomm.apps.fnd.models import (
 
 @require_http_methods(['GET'])
 def index(request):
-    current_language = get_language()
     deliveries = Delivery.objs.fnd().valid().shown()
     return render(request, 'apps/fnd/cart.html', {
         'deliveries': deliveries,

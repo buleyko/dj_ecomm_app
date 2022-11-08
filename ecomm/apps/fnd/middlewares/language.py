@@ -12,7 +12,6 @@ def language_middleware(get_response):
         translation.activate(lang)
         response = get_response(request)
         translation.deactivate()
-
         return response
 
     return middleware
