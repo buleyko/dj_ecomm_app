@@ -53,13 +53,25 @@ class Account(AbstractUser, BaseModel, TimestampsMixin, SoftdeleteMixin):
         except:
             return []
 
-    def update_wish(self, alias=settings.FND_ALIAS):
-        # wish_list_ids = self.wish_lists.all().values('id')
-        # self.wish = {alias: [int(prod['id']) for prod in wish_list_ids]}
+    def update_wish(self, prod_id, key='add', alias=settings.FND_ALIAS):
+        if key == 'add':
+            if self.wish:
+                self.wish.append(str(prod_id))
+            else:
+                self.wish = [str(prod_id)]
+        elif key == 'remove':
+            if self.wish:
+                self.wish.remove(str(prod_id))
         self.save(update_fields=['wish'])
 
-    def update_comparison(self, alias=settings.FND_ALIAS):
-        # comparison_list_ids = self.comparison_list.all().values('id')
-        # self.comparison = {alias: [int(prod['id']) for prod in comparison_list_ids]}
+    def update_comparison(self, prod_id, key='add', alias=settings.FND_ALIAS):
+        if key == 'add':
+            if self.comparison:
+                self.comparison.append(str(prod_id))
+            else:
+                self.comparison = [str(prod_id)]
+        elif key == 'remove':
+            if self.comparison:
+                self.comparison.remove(str(prod_id))
         self.save(update_fields=['comparison'])
 

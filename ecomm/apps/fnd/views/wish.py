@@ -32,8 +32,7 @@ def add(request):
     wish.add(product.id)
     wish_filling = len(wish)
     if request.user.is_authenticated:
-        request.user.wish_lists.add(product)
-        request.user.update_wish()
+        request.user.update_wish(product.id, 'add')
     return JsonResponse({'quantity': wish_filling})
 
 
@@ -46,6 +45,5 @@ def delete(request):
     wish.delete(product.id)
     wish_filling = len(wish)
     if request.user.is_authenticated:
-        request.user.wish_lists.remove(product)
-        request.user.update_wish()
+        request.user.update_wish(product.id, 'remove')
     return JsonResponse({'quantity': wish_filling})

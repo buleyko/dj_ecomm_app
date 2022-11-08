@@ -32,8 +32,7 @@ def add(request):
     comparison.add(product.id)
     comparison_filling = len(comparison)
     if request.user.is_authenticated:
-        request.user.comparison_list.add(product)
-        request.user.update_comparison()
+        request.user.update_comparison(product.id, 'add')
     return JsonResponse({'quantity': comparison_filling})
 
 
@@ -46,6 +45,5 @@ def delete(request):
     comparison.delete(product.id)
     comparison_filling = len(comparison)
     if request.user.is_authenticated:
-        request.user.comparison_list.remove(product)
-        request.user.update_comparison()
+        request.user.update_comparison(product.id, 'remove')
     return JsonResponse({'quantity': comparison_filling})

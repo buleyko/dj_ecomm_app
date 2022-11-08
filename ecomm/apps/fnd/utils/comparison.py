@@ -16,7 +16,7 @@ class Comparison:
         product_ids = self.wish
         products = Product.objs.fnd().valid().shown().\
             filter(id__in=product_ids).\
-            values()
+            select_related('prod_base')
 
         for prod in products:
             yield prod
