@@ -47,3 +47,13 @@ def delete(request):
     if request.user.is_authenticated:
         request.user.update_comparison(product.id, 'remove')
     return JsonResponse({'quantity': comparison_filling})
+
+
+@require_http_methods(['GET'])
+def remove(request, prod_slug):
+    comparison = Comparison(request)
+    product = get_object_or_404(Product, slug=prod_slug)
+    comparison.delete(product.id)
+    if request.user.is_authenticated:
+        request.user.update_comparison(product.id, 'remove')
+    return redirect(request.META.get('HTTP_REFERER'))

@@ -41,7 +41,8 @@ def show(request, cat_slug):
             tr=F('prod_attribute__name')
         ).distinct()
 
-    attr_values = Product.objs.fnd().valid().shown().filter(is_default=True).\
+    attr_values = Product.objs.fnd().valid().shown().\
+        filter(is_default=True).\
         filter(
             prod_base__category__in=Category.objs.get(slug=cat_slug).get_descendants(include_self=True)
         ).\
@@ -51,19 +52,19 @@ def show(request, cat_slug):
             tr=F('attribute_values__trs')
         ).distinct()
 
-    products = Product.objs.valid().shown().filter(is_default=True).\
+    products = Product.objs.valid().shown().\
+        filter(is_default=True).\
         filter_in_if_args_exists('attribute_values__value__in', filter_arguments).\
-        filter_contains_if_arg_exist(
-            [
-                'prod_base__title__contains', 
-                ('prod_base__translation__name__contains', 'or',)
-            ], search_argument
-        ).\
+        filter_contains_if_arg_exist([
+            'prod_base__title__contains', 
+            ('prod_base__translation__name__contains', 'or',)
+        ], search_argument).\
         filter(
             prod_base__category__in=Category.objs.get(slug=cat_slug).get_descendants(include_self=True)
         ).\
         select_related('prod_base').\
         distinct()
+
 
     return render(request, 'apps/fnd/category.html', {
         'page_obj': with_pagination(request, products),

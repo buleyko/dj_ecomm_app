@@ -12,5 +12,10 @@
 }
 /* Extra small: 0(320)px - 575px  */
 @media (max-width: 575px) {
-	
+	#menu-large-cont {
+		display: none;
+	}
+	#menu-small-cont {
+		display: block;
+	}
 }

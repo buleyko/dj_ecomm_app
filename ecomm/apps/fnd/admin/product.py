@@ -196,7 +196,7 @@ class ProductTypeAdmin(AdminBaseModel):
 		'get_name', 
 	]
 	inlines = [
-		# ProductTypeAttributeInline,
+		ProductTypeAttributeInline,
 	]
 
 	def get_name(self, instance):

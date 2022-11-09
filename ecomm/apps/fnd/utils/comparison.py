@@ -3,17 +3,18 @@ from django.utils.translation import get_language
 from ecomm.apps.fnd.models import Product
 
 
+
 class Comparison:
     def __init__(self, request):
         self.session = request.session
         compare = self.session.get('compare')
         if 'compare' not in request.session:
-            compare_prod_ids = request.user.get_wish() if request.user.is_authenticated else []
+            compare_prod_ids = request.user.get_comparison() if request.user.is_authenticated else []
             compare = self.session['compare'] = compare_prod_ids
         self.compare = compare
 
     def __iter__(self):
-        product_ids = self.wish
+        product_ids = self.compare
         products = Product.objs.fnd().valid().shown().\
             filter(id__in=product_ids).\
             select_related('prod_base')

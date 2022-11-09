@@ -289,7 +289,7 @@ const settings = new Proxy(settingsObj, {
     },
     has(target, prop) {
         return Object.keys(target).includes(prop);
-    }
+    },
 })
 
 
@@ -812,21 +812,21 @@ const compare = new CompareMamager({
 })
 
 /* -------------------- Storage ----------------- */
-// class LocalStorageManager {
-//     set(key, value) {
-//         localStorage.setItem(key, value);
-//     }
-//     get(key) {
-//         return localStorage.getItem(key);
-//     }
-//     delete(key) {
-//         localStorage.removeItem(key);
-//     }
-//     clear() {
-//         localStorage.clear();
-//     }
-// }
-// const storage = new LocalStorageManager()
+class LocalStorageManager {
+    set(key, value) {
+        localStorage.setItem(key, value);
+    }
+    get(key) {
+        return localStorage.getItem(key);
+    }
+    delete(key) {
+        localStorage.removeItem(key);
+    }
+    clear() {
+        localStorage.clear();
+    }
+}
+const storage = new LocalStorageManager()
 
 /* ------------------- Observable --------------- */
 // class Observable {

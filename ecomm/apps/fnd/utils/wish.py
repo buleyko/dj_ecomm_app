@@ -1,6 +1,5 @@
 from decimal import Decimal
 from django.utils.translation import get_language
-from django.db.models import Prefetch
 from ecomm.apps.fnd.models import Product
 
 

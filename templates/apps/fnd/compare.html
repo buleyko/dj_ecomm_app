@@ -15,6 +15,7 @@
             {% for item in comparison %}
             {% with prod=item %}
                 <div class="border border-color radius-2 m-6 p-6">
+                    <a href='{% url "fnd:comparison_remove_from_list" prod.slug %}'>{% translate "delete" %}</a>
                     {{ prod.prod_base.get_name_by }} 
                     <small>
                         {% if prod.ext_name %}

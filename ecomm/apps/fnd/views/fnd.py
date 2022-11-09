@@ -14,6 +14,7 @@ from ecomm.apps.fnd.models import (
 )
 
 
+
 @require_http_methods(['GET'])
 def home(request):
     current_language = get_language()
@@ -24,7 +25,6 @@ def home(request):
     return render(request, 'apps/fnd/home.html', {
         'page_obj': with_pagination(request, products),
     })
-
 
 
 @require_http_methods(['POST'])
@@ -48,7 +48,7 @@ def options(request):
 
 @require_http_methods(['GET'])
 def change_language(request, lang=settings.LANGUAGE_CODE):
-    if lang in settings.LANGS:
+    if lang in settings.LANGUAGE_CODES:
         request.session['lang'] = lang
     return redirect(request.META.get('HTTP_REFERER'))
 

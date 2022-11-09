@@ -34,7 +34,10 @@ def reset_passwd_mail(request):
 		email = form.cleaned_data['email']
 		user = Account.objs.get(email=email)
 
-		send_email_celery_task.delay(user.email, get_reset_passwd_mail_body(request, user))
+		try:
+			send_email_celery_task.delay(user.email, get_reset_passwd_mail_body(request, user))
+		except:
+			pass
 
 		messages.success(request, _('Message: Mail send'))
 		return redirect('fnd:home')

@@ -7,7 +7,7 @@
     <div class="flex justify-center align-center h-vh">
         <div>
             <h1 class="text-color text-center">{% translate "Confirm password" %}</h1>
-            <form action="{% url 'account:confirm_passwd' %}" method="POST">
+            <form action="{% url 'account:confirm_passwd_store' %}" method="POST">
                 {% csrf_token %}
                 {% if form.errors %}
                   {% for field in form %}

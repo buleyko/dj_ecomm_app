@@ -7,7 +7,7 @@
     <div class="flex justify-center align-center h-vh">
         <div>
             <h1 class="text-color text-center">{% translate "Reset password" %}</h1>
-            <form class="border border-color radius-2 mt-8 p-6" action="{% url 'account:reset_passwd' %}" method="POST">
+            <form class="border border-color radius-2 mt-8 p-6" action="{% url 'account:reset_passwd_mail' %}" method="POST">
                 {% csrf_token %}
                 {% if form.errors %}
                   {% for field in form %}

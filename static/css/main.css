@@ -344,7 +344,7 @@ menu .icon:hover {
 	color: var(--error-message-color);
 	background: var(--bg-success-message-color);
 }
-.message-container {
+.messages-container {
 	width: 50%;
 	left: 0; 
   	right: 0; 
@@ -352,7 +352,7 @@ menu .icon:hover {
   	margin-right: auto;
 }
 .message {
-	opacity: 0.9;
+	opacity: 0.98;
 	margin-top: 3px;
 	padding: 30px;
   	border: 1px solid var(--border-color);
@@ -501,6 +501,9 @@ menu .icon:hover {
 }
 .shadow-4 {
 	box-shadow: calc(var(--base-val) * 2)  calc(var(--base-val) * 4) var(--box-shadow-color);
+}
+.block {
+	display: block;
 }
 .margin-auto {
 	margin: 0 auto;

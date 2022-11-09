@@ -49,7 +49,6 @@ def entry(request):
         email = loginForm.cleaned_data['email']
         password = loginForm.cleaned_data['password']
         user = authenticate(request, email=email, password=password)
-        print('---', user)
         if user is not None:
             login(request, user)
             user.is_active = True

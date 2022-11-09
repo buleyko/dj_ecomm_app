@@ -23,12 +23,14 @@ urlpatterns = [
         path('', wish.index, name='wish'),
         path('add/', wish.add, name='wish_add'),
         path('delete/', wish.delete, name='wish_delete'),
+        path('remove-from-list/<slug:prod_slug>/', wish.remove, name='wish_remove_from_list'),
     ])),
 
     path('comparison/', include([
         path('', comparison.index, name='comparison'),
         path('add/', comparison.add, name='comparison_add'),
         path('delete/', comparison.delete, name='comparison_delete'),
+        path('remove-from-list/<slug:prod_slug>/', comparison.remove, name='comparison_remove_from_list'),
     ])),
 
     path('cart/', include([
