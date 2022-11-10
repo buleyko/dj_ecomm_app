@@ -5,6 +5,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from ecomm.vendors.base.model import BaseModel
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 from ecomm.vendors.mixins.model import (
 	SoftdeleteMixin, 
 	TimestampsMixin,
@@ -29,6 +31,7 @@ class Account(AbstractUser, BaseModel, TimestampsMixin, SoftdeleteMixin):
         verbose_name_plural =  _('Accounts')
         permissions = [
             ('view_dashboard', 'View Dasboard page'),
+            ('view_orders', 'View orders page'),
         ]
 
     def __str__(self):
@@ -77,4 +80,14 @@ class Account(AbstractUser, BaseModel, TimestampsMixin, SoftdeleteMixin):
             if self.comparison:
                 self.comparison.remove(str(prod_id))
         self.save(update_fields=['comparison'])
+
+    def account_permissions(self):
+        content_type = ContentType.objects.get_for_model(Account)
+        # permission = Permission.objects.get(
+        #     codename='view_dashboard',
+        #     content_type=content_type,
+        # )
+        accont_perms = Permission.objects.filter(content_type=content_type)
+        for perm in accont_perms:
+            self.user_permissions.add(perm)
 
