@@ -3,9 +3,11 @@ from django.conf import settings
 from django.utils.translation import get_language
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
+from django.db.models import Prefetch
 from ecomm.apps.fnd.models import (
 	Fnd,
 	Category,
+	ProductType,
 )
 from ecomm.apps.fnd.utils import (
 	Cart, 
@@ -23,7 +25,12 @@ def context_processor(request):
 	if fnd is None:
 		raise Http404
 
-	categories = Category.objs.fnd().valid()
+	categories = Category.objs.fnd().valid().\
+	prefetch_related(
+		Prefetch('types', 
+			queryset=ProductType.objs.valid().filter(in_menu=True), 
+		)
+	)
 	
 	options = fnd.set_options(request.session)
 	

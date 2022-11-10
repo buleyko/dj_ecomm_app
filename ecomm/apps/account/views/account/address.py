@@ -2,6 +2,7 @@ from django.views.decorators.http import require_http_methods
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import get_language
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.conf import settings
 from django.shortcuts import render
 from django.contrib import messages

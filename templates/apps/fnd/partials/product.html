@@ -35,6 +35,7 @@
                         </svg>
                     </div>
                 </div>
+                <!--
                 <div class="act relative">
                     <div class="absolute full w-80 t-2" onclick="compare.toggle()" data-prodid="{{ prod.id }}">
                         <svg class="prod-compare {% if prod.id|to_str in comparison.get_product_ids %}compared{% endif %}"  xmlns="http://www.w3.org/2000/svg" 
@@ -45,7 +46,24 @@
                             <path fill-rule="nonzero" d="M1 1 L1 15 L15 15 L15 1 L1 1"/>
                         </svg>
                     </div>
+                </div>-->
+                <div class="act relative">
+                    <div class="absolute full w-80 t-2" onclick="compare.toggle()" data-prodid="{{ prod.id }}">
+                        <svg class="prod-compare {% if prod.id|to_str in comparison.get_product_ids %}compared{% endif %}" 
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round" stroke-linejoin="round" fill="transparent">
+                            <rect fill="none"></rect>
+                            <line x1="128" y1="40" x2="128" y2="216" stroke-linejoin="round" stroke-width="12"></line>
+                            <line x1="104" y1="216" x2="152" y2="216" stroke-linejoin="round" stroke-width="12"></line>
+                            <line x1="56" y1="88" x2="200" y2="56" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></line>
+                            <path d="M24,168c0,17.7,20,24,32,24s32-6.3,32-24L56,88Z" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
+                            <path d="M168,136c0,17.7,20,24,32,24s32-6.3,32-24L200,56Z" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
+                        </svg>
+                    </div>
                 </div>
+
             </div>
             <div class="btns">
                 <div class="flex align-center">

@@ -155,6 +155,10 @@ class ProductAdmin(AdminBaseModel, ExcludeTimestampsMixin):
 		return f'{instance.prod_base.get_name_by(get_language())}({instance.name_ext()})'
 	get_name.short_description = _('Name')
 
+	# def save_model(self, request, obj, form, change):
+	# 	# obj.user = request.user
+	# 	super().save_model(request, obj, form, change)
+
 
 
 @admin.register(ProductAttribute)
@@ -187,6 +191,7 @@ class ProductTypeAdmin(AdminBaseModel):
 				('is_shown', 'is_blocked',), 
 				'slug',
 				'name',
+				'category',
 				'fnd',
 			)
 		}),

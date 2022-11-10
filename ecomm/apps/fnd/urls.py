@@ -6,6 +6,7 @@ from ecomm.apps.fnd.views import (
     wish,
     comparison,
     category,
+    prodtype,
     product,
 )
 
@@ -16,7 +17,8 @@ urlpatterns = [
     path('options/', fnd.options, name='options'),
     path('change-language/<str:lang>/', fnd.change_language, name='change_language'),
 
-    path('category/<slug:cat_slug>/', category.show, name='category'),
+    path('category/<slug:cat_slug>/products/', category.products, name='category_products'),
+    path('product-type/<slug:type_slug>/products/', prodtype.products, name='type_products'),
     path('product/<slug:prod_slug>/', product.show, name='product'),
 
     path('wish/', include([

@@ -3,6 +3,10 @@ from ecomm.vendors.helpers.pagination import with_pagination
 from django.http import JsonResponse
 from django.conf import settings
 import json
+from ecomm.vendors.helpers.request import (
+    get_filter_arguments,
+    get_search_arguments,
+)
 from django.shortcuts import (
     render,
     redirect,
@@ -17,13 +21,16 @@ from ecomm.apps.fnd.models import (
 
 @require_http_methods(['GET'])
 def home(request):
-    current_language = get_language()
+    search_arguments = get_search_arguments(request)
+
     products = Product.objs.fnd().valid().shown().\
         filter(is_default=True).\
+        filter_contains_if_args_exists('full_name__icontains', search_arguments).\
         select_related('prod_base')
         
     return render(request, 'apps/fnd/home.html', {
         'page_obj': with_pagination(request, products),
+        'search_arguments': search_arguments,
     })
 
 

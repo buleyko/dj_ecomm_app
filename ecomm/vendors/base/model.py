@@ -1,6 +1,7 @@
 import logging
 from django.db import models
 from django.contrib import admin
+from django.db.models import Prefetch
 from django.db.models import Q
 from django.conf import settings
 
@@ -32,7 +33,24 @@ class BaseQuerySet(models.QuerySet):
 		else:
 			return self
 
+	def filter_contains_if_args_exists(self, key, arguments=[]):
+		if arguments:
+			_q = Q()
+			conn = Q.OR
+			for arg in arguments:
+				search_dict = {key: arg}
+				_q.add(Q(**search_dict), conn)
+			return self.filter(_q)
+		else:
+			return self
+
 	def filter_contains_if_arg_exist(self, keys, argument=''):
+		''' like this
+		[
+            'prod_base__title__contains', 
+            ('prod_base__translation__name__contains', 'or',)
+        ], argument
+		'''
 		if argument:
 			if isinstance(keys, list):
 				_q = Q()
@@ -94,7 +112,10 @@ class BaseManager(models.Manager):
 	def filter_in_if_args_exists(self, key, arguments=[]):
 		return self.get_queryset().filter_in_if_args_exists(key, arguments)
 
-	def filter_contains_if_arg_exist(self, keys, argument=''):
+	def filter_contains_if_args_exists(self, key, arguments=[]):
+		return self.get_queryset().filter_contains_if_arg_exists(key, arguments)
+
+	def filter_contains_if_arg_exist(self, keys, arguments=''):
 		return self.get_queryset().filter_contains_if_arg_exist(keys, argument)
 
 	def translation_by(self, lang=settings.LANGUAGE_CODE):

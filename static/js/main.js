@@ -115,6 +115,7 @@ Array.prototype.findElementIndex = function(el) {
     return (index != -1) ? index : null;
 }
 
+
 Element.prototype.hiddenParentByСondition = function(condition) {
     if (condition) {
         if (this.parentElement.classList.contains('hidden')) {
@@ -732,31 +733,37 @@ class FilterWatcher {
         this.obserElements.forEach((el) => {
             const filter = this.getFilter(el);
             if (el.checked) {
-                this.filters.push(filter);
+                if (!this.filters.includes(filter)) {
+                    this.filters.push(filter);
+                }
             } else {
                 this.filters = this.filters.filter((v)=>v!=filter);
             }
         });
         if (this.filters.length > 0) {
-            this.applySelector.classList.remove('hidden');
+            this.applySelector.classList.remove('invisibile');
         } else {
-            this.applySelector.classList.add('hidden');
+            this.applySelector.classList.add('invisibile');
         }
     }
     getFilter(el) {
         return `${el.dataset.attr}=${el.dataset.val}`
     }
     apply(clear=false) {
-        if (!clear && this.filters.length > 0) {
-            const paramsStr = this.filters.join('&');
-            let url = window.location.href.split('?')[0];
-            window.location.href = url + '?' + paramsStr
-        } else if (clear || this.filters.length == 0) {
-            let url = window.location.href.split('?')[0];
-            window.location.href = url
+        let urlParts = window.location.href.split('?');
+        if (urlParts.length > 1) {
+            const searchParams = urlParts[1].split('&').filter((p)=>p.startsWith('search'))
+            if (!clear && this.filters.length > 0) {
+                const paramsStr = this.filters.concat(searchParams).join('&');
+                window.location.href = urlParts[0] + '?' + paramsStr
+            } else {
+                this.filters = [];
+                const paramsStr = (searchParams.length > 0)? '?' + searchParams.join('&') : '';
+                window.location.href = urlParts[0] + paramsStr;
+            }
         } else {
-            let url = window.location.href.split('?')[0];
-            window.location.href = url
+            const paramsStr = (this.filters.length > 0)? '?' + this.filters.join('&') : '';
+            window.location.href = urlParts[0] + paramsStr;
         }
     }
 }
@@ -764,19 +771,29 @@ class FilterWatcher {
 class Search {
     constructor(options) {
         this.searchInputElement = document.querySelector(options.searchInputElementSelector);
+        this.params = [];
     }
-    getSearchParam() {
-        return this.searchInputElement.value.trim();
+    getSearchParams() {
+        let rawParams = this.searchInputElement.value.split(',')
+        rawParams.forEach((param) => {
+            if(param !== '') {
+                this.params.push(`search-name=${param.trim()}`)
+            }
+        });
+        return this.params;
     }
     apply() {
-        const searchParamStr = this.getSearchParam()
-        let url = window.location.href.split('?');
-        if (url.length > 1) {
-            url = window.location.href + '&search-name=' + searchParamStr
+        let urlParts = window.location.href.split('?');
+        const searchParams = this.getSearchParams()
+        if (urlParts.length > 1) {
+            const filterParams = urlParts[1].split('&').filter((p)=>!p.startsWith('search'))
+            let paramsStr = filterParams.concat(searchParams).join('&');
+            paramsStr = (paramsStr.length > 0)? '?' + paramsStr : '';
+            window.location.href = urlParts[0] + paramsStr;
         } else {
-            url = window.location.href + '?search-name=' + searchParamStr 
+            const paramsStr = (searchParams.length > 0)? '?' + searchParams.join('&') : '';
+            window.location.href = urlParts[0] + paramsStr;
         }
-        window.location.href = url
     }
 }
 

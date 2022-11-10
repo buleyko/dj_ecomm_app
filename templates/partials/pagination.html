@@ -1,5 +1,6 @@
 {% load i18n %}
 
+{% if page_obj.paginator.num_pages > 1 %}
 <div class="flex justify-center align-center">
     {% if page_obj.has_previous %}
     <div class="border border-color radius-2 p-4 my-2">
@@ -25,3 +26,4 @@
     </div>
     {% endif %}
 </div>
+{% endif %}

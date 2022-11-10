@@ -11,18 +11,13 @@
         {% get_current_language as LANG_CODE %}
         <div class="my-10">
             <h1 class="text-color text-center">
-                {{ category.get_name_by }}
+                {{ prod_type.category.get_name_by }}
             </h1>
+            <h3 class="text-color text-center">
+                {{ prod_type.get_name_by }}
+            </h3>
         </div>
-        <div class="flex justify-center mb-4">
-            {% for prod_type in category.types.all %}
-                <div class="mx-4">
-                    <a class="text-decoration-none text-color" href="{% url 'fnd:type_products' prod_type.slug %}">
-                        <span>{{ prod_type.get_name_by }}</span>
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
+        
         <div class="flex">
             <div class="flex col mr-4 mt-6 p-8">
                 <div id="apply-filter" class="text-center {% if not filter_arguments %}invisibile{% endif %}">

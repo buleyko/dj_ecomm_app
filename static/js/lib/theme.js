@@ -18,7 +18,7 @@ const themes = {
         
     },
     dark: {
-        '--bg-html-color': '#C0C0C0',
+        '--bg-html-color': '#FFFFFF',
         '--bg-body-color': '#C0C0C0',
         '--bg-content-color': '#606060',
         '--bg-nav-color': '#404040',
