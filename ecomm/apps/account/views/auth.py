@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import permission_required
 from ecomm.vendors.helpers.token import account_token
 from ecomm.vendors.helpers.mail import get_activate_account_mail_body
 from ecomm.apps.fnd.tasks.mail import send_email_celery_task
-# from ecomm.apps.account.permissions.account import dashboard_page_permission
+#from ecomm.apps.account.permissions.account import dashboard_page_permission
 from django.http import HttpResponse
 from django.contrib import messages
 import logging

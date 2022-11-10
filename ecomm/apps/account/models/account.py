@@ -27,6 +27,9 @@ class Account(AbstractUser, BaseModel, TimestampsMixin, SoftdeleteMixin):
     class Meta:
         verbose_name =  _('Account')
         verbose_name_plural =  _('Accounts')
+        permissions = [
+            ('view_dashboard', 'View Dasboard page'),
+        ]
 
     def __str__(self):
         return self.username
