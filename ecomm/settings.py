@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'ecomm.apps.account.apps.AccountConfig',
     'ecomm.apps.fnd.apps.FndConfig',
     # extensions
+    'django_seed',
     'debug_toolbar',
     'mptt',
     'django_celery_results',

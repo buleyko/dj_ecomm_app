@@ -1,5 +1,17 @@
-# dj_ecomm_app
+# django ecomm base app
 
+Product list
+Category products list
+Product type products list
+
+Product filter (as and)
+Product search by name (as or)
+
+Registration per mail by celery task
+
+PayPal
+
+----------------------------------------------------------------
 
 paypal test 
 email: sb-4m5jo20987729@personal.example.com
@@ -12,3 +24,9 @@ brew services stop redis
 
 celery
 celery -A ecomm worker -l info
+
+-----------------------------------------------------------------
+
+crud account address
+celery task for sales
+data seeder
