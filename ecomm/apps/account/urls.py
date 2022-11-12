@@ -23,12 +23,12 @@ urlpatterns = [
 
 	path('address/', include([
         path('list/', address.index, name='address_list'),
-		path('create/', address.create, name='address_create'),
-		path('store/', address.store, name='address_store'),
-		path('edit/', address.edit, name='address_edit'),
+		# path('create/', address.create, name='address_create'),
+		# path('store/', address.store, name='address_store'),
+		path('edit/<int:pk>/', address.edit, name='address_edit'),
 		path('update/', address.update, name='address_update'),
-		path('destroy/', address.destroy, name='address_destroy'),
-		path('set-default', address.set_default, name='address_set_default'),
+		path('destroy/<int:pk>/', address.destroy, name='address_destroy'),
+		path('set-default/<int:pk>/', address.set_default, name='address_set_default'),
     ])),
 
 	path('reset-passwd/', include([

@@ -23,10 +23,10 @@
                     </div>
                     <div class="flex justify-between my-4">
                         <input class="px-2" type="text" name="order_post" placeholder="{% translate 'Postal code' %}"
-                            onkeypress="return onlyOneToNine(event);"
+                            onkeypress="return onlyZeroToNine(event);"
                         >
                         <input class="px-2" type="text" name="order_country" placeholder="{% translate 'Country code' %}"
-                            onkeypress="return onlyOneToNine(event);"
+                            onkeypress="return onlyZeroToNine(event);"
                         >
                     </div>
                     

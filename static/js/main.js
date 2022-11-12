@@ -63,6 +63,14 @@ const onlyOneToNine = (evt) => {
     return true;
 } // <input type="text" onkeypress="return onlyOneToNine(event);">
 
+const onlyZeroToNine = (evt) => {
+    var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) {
+        return false;
+    }
+    return true;
+} // <input type="text" onkeypress="return onlyOneToNine(event);">
+
 const getBySelector = (selector, single=true) => {
     let res = null;
     if (single) {

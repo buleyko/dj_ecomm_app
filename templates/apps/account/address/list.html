@@ -4,7 +4,21 @@
 
 
 {% block content %}
-    <div class="flex">
-        
+    <div class="flex justify-center">
+        {% for address in addresses %}
+            <div class="border border-color radius-2 m-4 p-10">
+                <h3>{{ address.full_name }}</h3>
+                <span class="block mt-2"><b>{% translate "Phone" %}:</b> {{ address.phone }}</span>
+                <span class="block mt-2"><b>{% translate "Postcode" %}:</b> {{ address.postcode }}</span>
+                <span class="block mt-2"><b>{% translate "Address" %}:</b> {{ address.address_line }}</span>
+                <span class="block mt-2"><b>{% translate "Town/City" %}:</b> {{ address.town_city }}</span>
+                <span class="block mt-2"><b>{% translate "Instructions" %}:</b> {{ address.delivery_instructions }}</span>
+                <small class="{% if address.default %}invisibile{% endif %}">
+                    <a class="text-decoration-none text-color text-right mt-4 block" href="{% url 'account:address_set_default' address.pk %}">
+                        {% translate "Set default" %}
+                    </a>
+                </small>
+            </div>
+        {% endfor %}
     </div>
 {% endblock content %} 
