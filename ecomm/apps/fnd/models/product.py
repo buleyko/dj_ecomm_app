@@ -225,7 +225,9 @@ class Product(BaseModel, TimestampsMixin, SoftdeleteMixin):
 	)
 	# extension for name - red,small etc. ({'en':['red', 'small']}) 
 	ext_name = models.JSONField( 
-		default = dict
+		default = dict,
+		blank=True,
+		null=True,
 	)
 	full_name = models.CharField(
 		max_length=500,
@@ -313,11 +315,12 @@ class Product(BaseModel, TimestampsMixin, SoftdeleteMixin):
 			return ''
 
 	def save(self, *args, **kwargs):
-		_full_name = [*self.prod_base.name.values(), *self.ext_name.values()]
+		ext_name = self.ext_name.values() if self.ext_name else []
+		_full_name = [*self.prod_base.name.values(), *ext_name]
 		self.full_name = '@'.join(_full_name)
 		super().save(*args, **kwargs)
 		if self.thumb:
-			thumb_img = resize_image(self.thumb.path, settings.THUMB_WIDTH)
+			thumb_img = resize_image(self.thumb.path, settings.THUMBNAIL_WITH)
 			if thumb_img:
 				thumb_img.save(self.thumb.path)
 

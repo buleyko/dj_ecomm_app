@@ -58,17 +58,14 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="flex col">
-                <div class="{{ options.content_layout|default:'list_container-row' }} mt-6 p-8">
-                    {% for prod in page_obj %}
-                        {% include 'apps/fnd/partials/product.html' with prod=prod %}
-                    {% endfor %}
-                </div>
-                <div>
-                    {% include 'partials/pagination.html' %}
-                </div>
+            <div class="{{ options.content_layout|default:'list_container-row' }} mt-6 p-8 w-full">
+                {% for prod in page_obj %}
+                    {% include 'apps/fnd/partials/product.html' with prod=prod %}
+                {% endfor %}
             </div>
-            
+            <div>
+                {% include 'partials/pagination.html' %}
+            </div>
         </div>
     </div>
 {% endblock content %} 

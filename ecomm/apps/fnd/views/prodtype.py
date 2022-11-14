@@ -4,6 +4,7 @@ from django.utils.translation import get_language
 from ecomm.vendors.helpers.pagination import with_pagination
 from django.conf import settings
 from django.http import JsonResponse
+from django.http import Http404
 from django.shortcuts import ( 
     get_object_or_404, 
     render,
@@ -42,7 +43,7 @@ def products(request, type_slug):
             tr=F('prod_attribute__name')
         ).distinct()
 
-    attr_values = Product.objs.fnd().valid().shown().\
+    attr_values = Product.objs.fnd().valid().shown().order_by().\
         filter(is_default=True).\
         filter(product_type=prod_type).\
         values(

@@ -137,10 +137,11 @@ class BaseModel(models.Model):
 		default=False
 	)   # block for all actions
 	is_shown = models.BooleanField(
-		default=False
+		default=True
 	) # show or hidden
 
 	objs = BaseManager()
+	objects = models.Manager()
 	
 	class Meta:
 		abstract = True

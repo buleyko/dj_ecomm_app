@@ -45,11 +45,6 @@
 					            	<a class="text-decoration-none text-color block" href="{% url 'fnd:category_products' node.slug %}">
 					            		{{ node.get_name_by }}
 					            	</a>
-					            	{% for prod_type in node.types.all %}
-						                <a class="text-decoration-none text-color block" href="{% url 'fnd:type_products' prod_type.slug %}">
-						                    <small>{{ prod_type.get_name_by }}</small>
-						                </a>
-						            {% endfor %}
 					            </span>
 					            {% if not node.is_leaf_node %}
 					            	{{ children }}

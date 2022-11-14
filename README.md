@@ -17,6 +17,13 @@ Svg animation for adding in wish and compare lists
 
 ----------------------------------------------------------------
 
+makemigrations,
+migrate,
+createsuperuser,
+create_foundation <alias>, (set settings FND_ALIAS = <alias>)
+
+----------------------------------------------------------------
+
 paypal test: 
 email: sb-4m5jo20987729@personal.example.com,
 password: 3yH5.L7>

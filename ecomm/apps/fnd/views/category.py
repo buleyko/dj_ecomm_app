@@ -5,6 +5,7 @@ from ecomm.vendors.helpers.pagination import with_pagination
 from django.db.models import Prefetch
 from django.conf import settings
 from django.http import JsonResponse
+from django.http import Http404
 from django.shortcuts import ( 
     get_object_or_404, 
     render,
@@ -40,13 +41,14 @@ def products(request, cat_slug):
     if category is None:
         raise Http404
 
-    attrs = ProductTypeAttribute.objs.filter(prod_type__prod__prod_base__category__slug=cat_slug).\
+    attrs = ProductTypeAttribute.objs.valid().shown().\
+        filter(prod_type__prod__prod_base__category__slug=cat_slug).\
         values(
             slug=F('prod_attribute__slug'), 
             tr=F('prod_attribute__name')
         ).distinct()
 
-    attr_values = Product.objs.fnd().valid().shown().\
+    attr_values = Product.objs.fnd().valid().shown().order_by().\
         filter(is_default=True).\
         filter(
             prod_base__category__in=Category.objs.get(slug=cat_slug).get_descendants(include_self=True)
@@ -66,7 +68,6 @@ def products(request, cat_slug):
         filter_contains_if_args_exists('full_name__icontains', search_arguments).\
         select_related('prod_base').\
         distinct()
-
 
     return render(request, 'apps/fnd/category.html', {
         'page_obj': with_pagination(request, products),

@@ -1,7 +1,5 @@
 from termcolor import colored
 from django.conf import settings
-from django.utils.translation import get_language
-from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.db.models import Prefetch
 from ecomm.apps.fnd.models import (

@@ -36,10 +36,10 @@ def reset_passwd_mail(request):
 
 		try:
 			send_email_celery_task.delay(user.email, get_reset_passwd_mail_body(request, user))
+			messages.success(request, _('Message: Mail send'))
 		except:
-			pass
+			messages.error(request, _('EMail not sent'))
 
-		messages.success(request, _('Message: Mail send'))
 		return redirect('fnd:home')
 	else:
 		return render(request, 'apps/account/passwd_reset.html', {

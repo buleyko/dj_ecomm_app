@@ -89,14 +89,14 @@ def registration(request):
 		logger.info(f'REGISTRATION USER: {user.id}')
 
 		# send registration email
-		# try:
-		#     send_email_celery_task.delay(user.email, get_activate_account_mail_body(request, user))
-		# except:
-		#     pass
-		# user.user_permissions.add(dashboard_page_permission)
+		try:
+		    send_email_celery_task.delay(user.email, get_activate_account_mail_body(request, user))
+		    messages.success(request, _('Accaunt created. For activation check mail'))
+		except:
+		    messages.error(request, _('EMail not sent'))
+		    
 		user.account_permissions()
 
-		messages.success(request, _('Accaunt created. For activation check mail'))
 		return redirect('fnd:home')
 	else:
 		return render(request, 'apps/account/auth/register.html', {

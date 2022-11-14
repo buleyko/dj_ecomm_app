@@ -2,9 +2,9 @@ import re
 
 
 # At least one letter, number or symbol (@$!%*#?&). Min 8 max 16.
-passwd_regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$')
+passwd_regex = re.compile(r'^(?=.*?[a-z])(?=.*?[A-Z])(?=.*\d)(?=.*?[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$')
 # letter, number or symbol (.-_)
-email_regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+email_regex = re.compile(r'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$')
 
 
 def email_validation_check(email, error_msg=None):
