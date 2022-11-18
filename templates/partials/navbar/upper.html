@@ -39,18 +39,20 @@
 						<div class="px-2">
 							<input class="border border-color radius-2 p-4" type="text" name="search">
 						</div>
-					    {% recursetree categories %}
-					        <div class="p-4">
-					            <span class="pointer">
-					            	<a class="text-decoration-none text-color block" href="{% url 'fnd:category_products' node.slug %}">
-					            		{{ node.get_name_by }}
-					            	</a>
-					            </span>
-					            {% if not node.is_leaf_node %}
-					            	{{ children }}
-					            {% endif %}
-					        </div>
-					    {% endrecursetree %}
+					    <ul class="p-2">
+						    {% recursetree categories %}
+						        <li class="list-style-none p-4 pointer">
+						        	<a class="text-decoration-none text-color" href="{% url 'fnd:category_products' node.slug %}">
+						            	{{ node.get_name_by }}
+						            </a>
+						            {% if node.is_leaf_node %}
+						                <ul class="p-2 children">
+						                    {{ children }}
+						                </ul>
+						            {% endif %}
+						        </li>
+						    {% endrecursetree %}
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -199,18 +201,20 @@
 	<div><!-- anything under the menu --></div>
 	<div class="relative">
 		<div id="categories-list" class="absolute z-1 text-color bg-nav-color p-8 hidden">
-		    {% recursetree categories %}
-		        <ul class="p-2">
-		        	<li class="list-style-none p-4 pointer">
-		            	<a class="text-decoration-none text-color" href="{% url 'fnd:category_products' node.slug %}">
-		            		{{ node.get_name_by }}
-		            	</a>
-		            </li>
-		            {% if not node.is_leaf_node %}
-		            	{{ children }}
-		            {% endif %}
-		        </ul>
-		    {% endrecursetree %}
+			<ul class="p-2">
+			    {% recursetree categories %}
+			        <li class="list-style-none p-4 pointer">
+			        	<a class="text-decoration-none text-color" href="{% url 'fnd:category_products' node.slug %}">
+			            	{{ node.get_name_by }}
+			            </a>
+			            {% if node.is_leaf_node %}
+			                <ul style="margin-left: 100px;" class="p-2 children">
+			                    {{ children }}
+			                </ul>
+			            {% endif %}
+			        </li>
+			    {% endrecursetree %}
+			</ul>
 		</div>
 	</div>
 </header>

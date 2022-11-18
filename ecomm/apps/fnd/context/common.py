@@ -24,11 +24,11 @@ def context_processor(request):
 		raise Http404
 
 	categories = Category.objs.fnd().valid().\
-	prefetch_related(
-		Prefetch('types', 
-			queryset=ProductType.objs.valid().filter(in_menu=True), 
+		prefetch_related(
+			Prefetch('types', 
+				queryset=ProductType.objs.valid().filter(in_menu=True), 
+			)
 		)
-	)
 	
 	options = fnd.set_options(request.session)
 	
