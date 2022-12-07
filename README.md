@@ -36,6 +36,7 @@ brew services stop redis
 celery: 
 celery -A ecomm worker -l info
 
+manage.py loaddata data_dump.json
 -----------------------------------------------------------------
 not done:
 crud account address,
