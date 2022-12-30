@@ -16,7 +16,7 @@ Lite and dark themes.
 Svg animation for adding in wish and compare lists
 
 ----------------------------------------------------------------
-$ mkdir log media,
+$ mkdir log media locale,
 makemigrations,
 migrate,
 createsuperuser,
